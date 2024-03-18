@@ -2,16 +2,41 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
+use Spatie\Permission\Models\Role;
 
-class RoleController extends Controller
+class RoleController extends Controller implements HasMiddleware
 {
+    public static function middleware()
+    {
+        return [
+            new Middleware('permission:role-list|role-create|role-edit|role-delete', only: ['index', 'store']),
+            new Middleware('permission:role-create', only: ['create', 'store']),
+            new Middleware('permission:role-edit', only: ['edit', 'update']),
+            new Middleware('permission:role-delete', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $roles = Role::query()->orderBy('id', 'DESC')->paginate(50);
+
+        return Inertia::render('Roles/Index', [
+            'can' => [
+                'role-create' => Auth::user()->can('role-create', User::class),
+                'role-edit' => Auth::user()->can('role-edit', User::class),
+                'role-delete' => Auth::user()->can('role-delete', User::class),
+            ],
+            'roles' => $roles,
+        ]);
     }
 
     /**

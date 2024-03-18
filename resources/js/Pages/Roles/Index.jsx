@@ -3,17 +3,17 @@ import {Head} from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {router} from '@inertiajs/core'
 
-export default function Index({auth, can, products}) {
+export default function Index({auth, can, roles}) {
     return (
         <AuthenticatedLayout user={auth.user}>
-            <Head title="Products"/>
+            <Head title="Roles"/>
 
             <div className="max-w-3xl mx-auto p-4 sm:p-6 lg:p-8">
                 <div className="flex items-center justify-between p-4 bg-gray-200 rounded-md">
-                    <div className="font-bold">Products</div>
+                    <div className="font-bold">Roles</div>
                     {
                         can['product-create'] &&
-                        <PrimaryButton onClick={() => router.visit(route('products.create'))}>create product</PrimaryButton>
+                        <PrimaryButton onClick={() => router.visit(route('role.create'))}>create role</PrimaryButton>
                     }
                 </div>
 
@@ -25,33 +25,25 @@ export default function Index({auth, can, products}) {
                                 Name
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Detail
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Actions
                             </th>
                         </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                        {products.data.map((product, index) => (
+                        {roles.data.map((role, index) => (
                             <tr key={index}>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {product.name}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {product.detail}
+                                    {role.name}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     <PrimaryButton className='mr-2' disabled={false}>Show</PrimaryButton>
                                     {
-                                        product.user.id === auth.user.id &&
-                                        can['product-edit'] &&
-                                        <PrimaryButton className='mr-2' onClick={() => router.visit(route('products.edit', {id: product.id}))}>Edit</PrimaryButton>
+                                        can['role-edit'] &&
+                                        <PrimaryButton className='mr-2' onClick={() => router.visit(route('role.edit', {id: role.id}))}>Edit</PrimaryButton>
                                     }
                                     {
-                                        product.user.id === auth.user.id &&
-                                        can['product-delete'] &&
-                                        <PrimaryButton onClick={() => router.delete(route('products.destroy', product.id))}>Delete</PrimaryButton>
+                                        can['role-delete'] &&
+                                        <PrimaryButton onClick={() => router.delete(route('role.destroy', role.id))}>Delete</PrimaryButton>
                                     }
                                 </td>
                             </tr>

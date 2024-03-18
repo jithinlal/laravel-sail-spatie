@@ -75,22 +75,35 @@ class ProductController extends Controller implements HasMiddleware
      */
     public function edit(string $id)
     {
-        //
+        $product = Product::with('user:id,name')->find($id);
+
+        return Inertia::render('Products/Edit', [
+            'product' => $product
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Product $product)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:20',
+            'detail' => 'required|string|max:255'
+        ]);
+
+        $product->update($validated);
+
+        return redirect(route('products.index'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        //
+        $product->delete();
+
+        return redirect(route('products.index'));
     }
 }
