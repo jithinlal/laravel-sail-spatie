@@ -12,8 +12,8 @@ export default function Index({auth, can, roles}) {
                 <div className="flex items-center justify-between p-4 bg-gray-200 rounded-md">
                     <div className="font-bold">Roles</div>
                     {
-                        can['product-create'] &&
-                        <PrimaryButton onClick={() => router.visit(route('role.create'))}>create role</PrimaryButton>
+                        can['role-create'] &&
+                        <PrimaryButton onClick={() => router.visit(route('roles.create'))}>create role</PrimaryButton>
                     }
                 </div>
 
