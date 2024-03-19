@@ -8,6 +8,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller implements HasMiddleware
@@ -44,7 +45,11 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function create()
     {
-        //
+        $permissions = Permission::all();
+        
+        return Inertia::render('Roles/Create', [
+            'permissions' => $permissions,
+        ]);
     }
 
     /**
