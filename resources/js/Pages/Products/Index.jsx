@@ -9,39 +9,45 @@ export default function Index({auth, can, products}) {
             <Head title="Products"/>
 
             <div className="max-w-3xl mx-auto p-4 sm:p-6 lg:p-8">
-                <div className="flex items-center justify-between p-4 bg-gray-200 rounded-md">
-                    <div className="font-bold">Products</div>
+                <div className="bg-primary flex items-center justify-between p-4 rounded-md">
+                    <div className="font-bold">
+                        <h1>
+                            Products
+                        </h1>
+                    </div>
                     {
                         can['product-create'] &&
-                        <PrimaryButton onClick={() => router.visit(route('products.create'))}>create product</PrimaryButton>
+                        <PrimaryButton onClick={() => router.visit(route('products.create'))}>
+                            Create Product
+                        </PrimaryButton>
                     }
                 </div>
 
                 <div className="overflow-x-auto">
-                    <table className="w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                        <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Name
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Detail
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Actions
-                            </th>
-                        </tr>
+                    <table className="w-full divide-y table">
+                        <thead>
+                            <tr>
+                                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                                    Name
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                                    Detail
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                                    Actions
+                                </th>
+                            </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
+                        <tbody className="bg-primary divide-y divide-gray-200">
                         {products.data.map((product, index) => (
                             <tr key={index}>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td className="px-6 py-4 whitespace-nowrap text-sm">
                                     {product.name}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td className="px-6 py-4 whitespace-nowrap text-sm">
                                     {product.detail}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td className="px-6 py-4 whitespace-nowrap text-sm">
                                     <PrimaryButton className='mr-2' disabled={false}>Show</PrimaryButton>
                                     {
                                         product.user.id === auth.user.id &&

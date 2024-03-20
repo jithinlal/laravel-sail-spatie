@@ -21,14 +21,14 @@ export default function Create({auth}) {
                     <input
                         value={data.name}
                         placeholder="Name"
-                        className="block m-2 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+                        className="input block m-2 input-bordered w-full"
                         onChange={e => setData('name', e.target.value)}
                     />
                     <InputError message={errors.name} className="m-2"/>
                     <input
                         value={data.detail}
                         placeholder="Detail"
-                        className="block m-2 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+                        className="input block m-2 input-bordered w-full"
                         onChange={e => setData('detail', e.target.value)}
                     />
                     <InputError message={errors.detail} className="m-2"/>
