@@ -24,32 +24,32 @@ export default function Index({auth, can, roles}) {
                 </div>
 
                 <div className="overflow-x-auto">
-                    <table className="w-full divide-y table">
+                    <table className="w-full table">
                         <thead>
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                                <th>
                                     Name
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                                <th>
                                     Actions
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className="bg-primary divide-y divide-gray-200">
+                        <tbody className="bg-primary">
                         {roles.data.map((role, index) => (
                             <tr key={index}>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                                <td>
                                     {role.name}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                    <PrimaryButton className='mr-2' disabled={false}>Show</PrimaryButton>
+                                <td>
+                                    <PrimaryButton className='mr-2'>Show</PrimaryButton>
                                     {
                                         can['role-edit'] &&
-                                        <PrimaryButton className='mr-2' onClick={() => router.visit(route('role.edit', {id: role.id}))}>Edit</PrimaryButton>
+                                        <PrimaryButton className='mr-2' onClick={() => router.visit(route('roles.edit', {id: role.id}))}>Edit</PrimaryButton>
                                     }
                                     {
                                         can['role-delete'] &&
-                                        <PrimaryButton onClick={() => router.delete(route('role.destroy', role.id))}>Delete</PrimaryButton>
+                                        <PrimaryButton onClick={() => router.delete(route('roles.destroy', role.id))}>Delete</PrimaryButton>
                                     }
                                 </td>
                             </tr>

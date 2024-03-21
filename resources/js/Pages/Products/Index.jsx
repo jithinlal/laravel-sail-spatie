@@ -24,30 +24,30 @@ export default function Index({auth, can, products}) {
                 </div>
 
                 <div className="overflow-x-auto">
-                    <table className="w-full divide-y table">
+                    <table className="w-full table">
                         <thead>
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                                <th>
                                     Name
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                                <th>
                                     Detail
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium tracking-wider">
+                                <th>
                                     Actions
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className="bg-primary divide-y divide-gray-200">
+                        <tbody className="bg-primary">
                         {products.data.map((product, index) => (
                             <tr key={index}>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                                <td>
                                     {product.name}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                                <td>
                                     {product.detail}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                                <td>
                                     <PrimaryButton className='mr-2' disabled={false}>Show</PrimaryButton>
                                     {
                                         product.user.id === auth.user.id &&

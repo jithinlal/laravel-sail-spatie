@@ -6,20 +6,38 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Guard;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
     private array $permissions = [
-        'role-list',
-        'role-create',
-        'role-edit',
-        'role-delete',
-        'product-list',
-        'product-create',
-        'product-edit',
-        'product-delete'
+        [
+            'name' => 'List roles',
+            'uid' => 'role-list'
+        ],
+        [
+            'name' => 'Create roles',
+            'uid' => 'role-create'],
+        [
+            'name' => 'Edit roles',
+            'uid' => 'role-edit'],
+        [
+            'name' => 'Delete roles',
+            'uid' => 'role-delete'],
+        [
+            'name' => 'List products',
+            'uid' => 'product-list'],
+        [
+            'name' => 'Create products',
+            'uid' => 'product-create'],
+        [
+            'name' => 'Edit products',
+            'uid' => 'product-edit'],
+        [
+            'name' => 'Delete products',
+            'uid' => 'product-delete'],
     ];
     /**
      * Seed the application's database.
@@ -27,7 +45,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         foreach ($this->permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::create(['name' => $permission['name'], 'uid' => $permission['uid']]);
         }
 
         $adminUser = User::create([
@@ -48,8 +66,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $normalRole = Role::create(['name' => 'Normal']);
-        $permission = Permission::findByName('product-list');
-        $normalRole->syncPermissions([$permission]);
+        $permission = Permission::query()->where(['uid' => 'product-list', 'guard_name' => Guard::getDefaultName(Permission::class)])->get();
+        $normalRole->syncPermissions($permission);
         $normalUser->assignRole([$normalRole->id]);
     }
 }
