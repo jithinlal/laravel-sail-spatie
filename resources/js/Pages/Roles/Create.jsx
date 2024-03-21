@@ -1,3 +1,4 @@
+import React from 'react'
 import {Head, useForm} from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
@@ -10,42 +11,46 @@ export default function Create({auth, permissions}) {
     })
     const submit = (e) => {
         e.preventDefault();
-        console.log({data})
-        // post(route('roles.store'), { onSuccess: () => reset() });
+        post(route('roles.store'), { onSuccess: () => reset() });
     };
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Create role"/>
 
-            <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
+            <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
                 <form onSubmit={submit}>
                     <input
                         value={data.name}
                         placeholder="Name"
-                        className="block m-2 w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+                        className="m-2 input input-bordered w-full"
                         onChange={e => setData('name', e.target.value)}
                     />
-                    <InputError message={errors.name} className="m-2"/>
-                    <div className="flex flex-wrap m-2">
-                        {permissions.map(permission => (
-                            <div key={permission.id} className="w-full md:w-1/4 sm:w-1/2 flex items-center">
-                                <input
-                                    type="checkbox"
-                                    value={permission.id}
-                                    className="mr-2 h-4 w-4 border border-gray-300 checked:bg-black focus-visible:bg-black focus:outline-none checked:border-transparent rounded-sm"
-                                    onChange={e => setData('permissions', [e.target.value])}
-                                />
-                                <label className="mr-4">
-                                    {permission.name}
-                                </label>
-                            </div>
+                    <div className="w-full flex flex-wrap m-1">
+                        {permissions.map((permission) => (
+                            <React.Fragment key={permission.id}>
+                                <div className="form-control w-1/2 p-2">
+                                    <label className="label cursor-pointer">
+                                        <h6>{permission.name}</h6>
+                                        <input type="checkbox" className="checkbox" onChange={(e) => {
+                                            let prevPermissions = data.permissions
+                                            if(e.target.checked) {
+                                                prevPermissions.push(permission.id)
+                                            } else {
+                                                prevPermissions = prevPermissions.filter(prevPermission => prevPermission !== permission.id)
+                                            }
+                                            setData('permissions', prevPermissions)
+                                        }}/>
+                                    </label>
+                                    <div className="divider"></div>
+                                </div>
+                            </React.Fragment>
                         ))}
                     </div>
-
-                        <InputError message={errors.detail} className="m-2"/>
-                        <PrimaryButton className="mt-4 m-2" disabled={processing}>Add</PrimaryButton>
+                    <InputError message={errors.name} className="m-2"/>
+                    <InputError message={errors.permissions} className="m-2"/>
+                    <PrimaryButton className="mt-4 m-2" disabled={processing}>Add</PrimaryButton>
                 </form>
             </div>
         </AuthenticatedLayout>
-)
+    )
 }

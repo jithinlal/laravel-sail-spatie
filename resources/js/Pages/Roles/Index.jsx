@@ -17,7 +17,7 @@ export default function Index({auth, can, roles}) {
                     </div>
                     {
                         can['role-create'] &&
-                        <PrimaryButton onClick={() => router.visit(route('role.create'))}>
+                        <PrimaryButton onClick={() => router.visit(route('roles.create'))}>
                             Create Role
                         </PrimaryButton>
                     }

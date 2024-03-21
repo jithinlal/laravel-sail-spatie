@@ -46,7 +46,7 @@ class RoleController extends Controller implements HasMiddleware
     public function create()
     {
         $permissions = Permission::all();
-        
+
         return Inertia::render('Roles/Create', [
             'permissions' => $permissions,
         ]);
@@ -57,7 +57,24 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:20',
+            'permissions' => 'required|array|min:1',
+            'permissions.*' => 'int'
+        ]);
+
+        $role = new Role;
+
+        $role->name = $request->name;
+        $role->guard_name = 'web';
+
+        $role->save();
+
+        $permissions = Permission::query()->findMany($request->permissions);
+
+        $role->syncPermissions($permissions);
+
+        return redirect(route('roles.index'));
     }
 
     /**
