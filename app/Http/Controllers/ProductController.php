@@ -54,7 +54,7 @@ class ProductController extends Controller implements HasMiddleware
     {
         $validated = $request->validate([
             'name' => 'required|string|max:20',
-            'detail' => 'required|string|max:255'
+            'detail' => 'required|string|max:255',
         ]);
 
         $request->user()->products()->create($validated);
@@ -78,7 +78,7 @@ class ProductController extends Controller implements HasMiddleware
         $product = Product::with('user:id,name')->find($id);
 
         return Inertia::render('Products/Edit', [
-            'product' => $product
+            'product' => $product,
         ]);
     }
 
@@ -89,7 +89,7 @@ class ProductController extends Controller implements HasMiddleware
     {
         $validated = $request->validate([
             'name' => 'required|string|max:20',
-            'detail' => 'required|string|max:255'
+            'detail' => 'required|string|max:255',
         ]);
 
         $product->update($validated);

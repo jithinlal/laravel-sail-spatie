@@ -30,7 +30,7 @@ export default function Create({auth, permissions}) {
                             <React.Fragment key={permission.id}>
                                 <div className="form-control w-1/2 p-2">
                                     <label className="label cursor-pointer">
-                                        <h6>{permission.name}</h6>
+                                        <h6>{permission.title}</h6>
                                         <input type="checkbox" className="checkbox" onChange={(e) => {
                                             let prevPermissions = data.permissions
                                             if(e.target.checked) {

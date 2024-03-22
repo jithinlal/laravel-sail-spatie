@@ -1,10 +1,11 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 
-export default function Dashboard({ auth }) {
+export default function Dashboard({ auth, permissions }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
+            permissions={permissions}
             header={<h1 className="font-semibold text-xl leading-tight">Dashboard</h1>}
         >
             <Head title="Dashboard" />

@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
 import ApplicationLogo from '@/Components/ApplicationLogo';
 
-export default function Authenticated({ user, header, children }) {
+export default function AuthenticatedLayout({ user, permissions, header, children }) {
     const [theme, setTheme] = useState(localStorage.getItem("theme") ?? "lighter");
 
     const handleToggle = (e) => {
@@ -17,6 +17,7 @@ export default function Authenticated({ user, header, children }) {
         const localTheme = localStorage.getItem('theme')
         document.querySelector('html')?.setAttribute('data-theme', localTheme)
     }, [theme]);
+
     return (
         <div className="min-h-screen">
             <div className="navbar bg-primary">
@@ -43,18 +44,24 @@ export default function Authenticated({ user, header, children }) {
                                     Chirps
                                 </a>
                             </li>
-                            <li>
-                                <a href={route('products.index')}
-                                   className={route().current('products.index') ? 'border border-neutral' : ''}>
-                                    Products
-                                </a>
-                            </li>
-                            <li>
-                                <a href={route('roles.index')}
-                                   className={route().current('roles.index') ? 'border border-neutral' : ''}>
-                                    Roles
-                                </a>
-                            </li>
+                            {
+                                permissions.includes('product-list') &&
+                                <li>
+                                    <a href={route('products.index')}
+                                       className={route().current('products.index') ? 'border border-neutral' : ''}>
+                                        Products
+                                    </a>
+                                </li>
+                            }
+                            {
+                                permissions.includes('role-list') &&
+                                <li>
+                                    <a href={route('roles.index')}
+                                       className={route().current('roles.index') ? 'border border-neutral' : ''}>
+                                        Roles
+                                    </a>
+                                </li>
+                            }
                         </ul>
                     </div>
                     <a className="btn btn-ghost text-xl">
@@ -75,18 +82,24 @@ export default function Authenticated({ user, header, children }) {
                                 Chirps
                             </a>
                         </li>
-                        <li className="mr-1">
-                            <a href={route('products.index')}
-                               className={route().current('products.index') ? 'border border-neutral' : ''}>
-                                Products
-                            </a>
-                        </li>
-                        <li className="mr-1">
-                            <a href={route('roles.index')}
-                               className={route().current('roles.index') ? 'border border-neutral' : ''}>
-                                Roles
-                            </a>
-                        </li>
+                        {
+                            permissions.includes('product-list') &&
+                            <li className="mr-1">
+                                <a href={route('products.index')}
+                                   className={route().current('products.index') ? 'border border-neutral' : ''}>
+                                    Products
+                                </a>
+                            </li>
+                        }
+                        {
+                            permissions.includes('role-list') &&
+                            <li className="mr-1">
+                                <a href={route('roles.index')}
+                                   className={route().current('roles.index') ? 'border border-neutral' : ''}>
+                                    Roles
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </div>
                 <div className="navbar-end">

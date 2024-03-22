@@ -60,7 +60,7 @@ class RoleController extends Controller implements HasMiddleware
         $request->validate([
             'name' => 'required|string|max:20',
             'permissions' => 'required|array|min:1',
-            'permissions.*' => 'int'
+            'permissions.*' => 'int',
         ]);
 
         $role = new Role;
