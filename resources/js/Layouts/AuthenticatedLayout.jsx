@@ -1,4 +1,6 @@
 import {useState, useEffect} from "react";
+import axios from 'axios';
+import { Inertia } from '@inertiajs/inertia'
 import ApplicationLogo from '@/Components/ApplicationLogo';
 
 export default function AuthenticatedLayout({ user, permissions, header, children }) {
@@ -45,7 +47,7 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                                 </a>
                             </li>
                             {
-                                permissions.includes('product-list') &&
+                                permissions['product-list'] &&
                                 <li>
                                     <a href={route('products.index')}
                                        className={route().current('products.index') ? 'border border-neutral' : ''}>
@@ -54,7 +56,7 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                                 </li>
                             }
                             {
-                                permissions.includes('role-list') &&
+                                permissions['role-list'] &&
                                 <li>
                                     <a href={route('roles.index')}
                                        className={route().current('roles.index') ? 'border border-neutral' : ''}>
@@ -83,7 +85,7 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                             </a>
                         </li>
                         {
-                            permissions.includes('product-list') &&
+                            permissions['product-list'] &&
                             <li className="mr-1">
                                 <a href={route('products.index')}
                                    className={route().current('products.index') ? 'border border-neutral' : ''}>
@@ -92,7 +94,7 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                             </li>
                         }
                         {
-                            permissions.includes('role-list') &&
+                            permissions['role-list'] &&
                             <li className="mr-1">
                                 <a href={route('roles.index')}
                                    className={route().current('roles.index') ? 'border border-neutral' : ''}>
@@ -130,11 +132,17 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                                 </label>
                             </li>
                             <li>
-                                <form action={route('logout')} method="post" className="justify-center">
-                                    <button type="submit">
+                                {/*<form action={route('logout')} method="post" className="justify-center">*/}
+                                    <button type="button" onClick={() => {
+                                        axios.post(route('logout')).then(() => {
+                                            Inertia.reload({
+                                                preserveState: false
+                                            });
+                                        })
+                                    }}>
                                         Logout
                                     </button>
-                                </form>
+                                {/*</form>*/}
                             </li>
                         </ul>
                     </div>
