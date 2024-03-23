@@ -3,7 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import InputError from "@/Components/InputError.jsx";
 
-export default function Create({auth}) {
+export default function Create({auth, permissions}) {
     const {data, setData, post, processing, reset, errors} = useForm({
         name: '',
         detail: ''
@@ -13,7 +13,7 @@ export default function Create({auth}) {
         post(route('products.store'), { onSuccess: () => reset() });
     };
     return (
-        <AuthenticatedLayout user={auth.user}>
+        <AuthenticatedLayout user={auth.user} permissions={permissions}>
             <Head title="Create product"/>
 
             <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">

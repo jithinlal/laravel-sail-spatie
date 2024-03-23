@@ -26,7 +26,7 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                 <div className="navbar-start">
                     <div className="dropdown">
                         <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            <svg href="/" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                  stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                                       d="M4 6h16M4 12h8m-8 6h16"/>
@@ -66,7 +66,7 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                             }
                         </ul>
                     </div>
-                    <a className="btn btn-ghost text-xl">
+                    <a className="btn btn-ghost text-xl" href="/">
                         <ApplicationLogo className="block h-9 w-auto fill-current"/>
                     </a>
                 </div>
@@ -132,17 +132,15 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                                 </label>
                             </li>
                             <li>
-                                {/*<form action={route('logout')} method="post" className="justify-center">*/}
-                                    <button type="button" onClick={() => {
-                                        axios.post(route('logout')).then(() => {
-                                            Inertia.reload({
-                                                preserveState: false
-                                            });
-                                        })
-                                    }}>
-                                        Logout
-                                    </button>
-                                {/*</form>*/}
+                                <button type="button" className="justify-center" onClick={() => {
+                                    axios.post(route('logout')).then(() => {
+                                        Inertia.reload({
+                                            preserveState: false
+                                        });
+                                    })
+                                }}>
+                                    Logout
+                                </button>
                             </li>
                         </ul>
                     </div>
