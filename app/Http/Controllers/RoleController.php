@@ -48,7 +48,7 @@ class RoleController extends Controller implements HasMiddleware
         $permissions = Permission::all();
 
         return Inertia::render('Roles/Create', [
-            'permissions' => $permissions,
+            'permissionList' => $permissions,
         ]);
     }
 

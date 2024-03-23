@@ -4,7 +4,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import InputError from "@/Components/InputError.jsx";
 
-export default function Create({auth, permissions}) {
+export default function Create({auth, permissions, permissionList}) {
     const {data, setData, post, processing, reset, errors} = useForm({
         name: '',
         permissions: []
@@ -26,7 +26,7 @@ export default function Create({auth, permissions}) {
                         onChange={e => setData('name', e.target.value)}
                     />
                     <div className="w-full flex flex-wrap m-1">
-                        {permissions.map((permission) => (
+                        {permissionList.map((permission) => (
                             <React.Fragment key={permission.id}>
                                 <div className="form-control w-1/2 p-2">
                                     <label className="label cursor-pointer">
