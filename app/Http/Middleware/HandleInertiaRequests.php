@@ -31,7 +31,7 @@ class HandleInertiaRequests extends Middleware
     {
         $permissions = [];
         if ($request->user() !== null) {
-            $permissions = $request->user()->getPermissionsViaRoles()->mapWithKeys(function ($permission){
+            $permissions = $request->user()->getPermissionsViaRoles()->mapWithKeys(function ($permission) {
                 return [$permission['name'] => true];
             });
         }

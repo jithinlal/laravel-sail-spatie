@@ -2,7 +2,7 @@ import React from 'react'
 import {Head, useForm} from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
-import InputError from "@/Components/InputError.jsx";
+import {toast} from "react-hot-toast";
 
 export default function Create({auth, permissions, permissionList}) {
     const {data, setData, post, processing, reset, errors} = useForm({
@@ -11,7 +11,22 @@ export default function Create({auth, permissions, permissionList}) {
     })
     const submit = (e) => {
         e.preventDefault();
-        post(route('roles.store'), { onSuccess: () => reset() });
+        post(route('roles.store'), {
+            onSuccess: () => {
+                toast.success('Role created!')
+                reset()
+            },
+            onError: (errors) => {
+                let error = ''
+                Object.values(errors).forEach(err => {
+                    error += err + '\n'
+                })
+
+                if (error) {
+                    toast.error(error)
+                }
+            }
+        });
     };
     return (
         <AuthenticatedLayout user={auth.user} permissions={permissions}>
@@ -46,8 +61,6 @@ export default function Create({auth, permissions, permissionList}) {
                             </React.Fragment>
                         ))}
                     </div>
-                    <InputError message={errors.name} className="m-2"/>
-                    <InputError message={errors.permissions} className="m-2"/>
                     <PrimaryButton className="mt-4 m-2" disabled={processing}>Add</PrimaryButton>
                 </form>
             </div>

@@ -90,7 +90,25 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function edit(string $id)
     {
-        //
+        $role = Role::findById($id);
+
+        $permissionList = Permission::all();
+
+        $rolePermissions = $role->permissions()->get(['id', 'name', 'title']);
+
+        foreach ($permissionList as $item) {
+            foreach ($rolePermissions as $rolePermission) {
+                if ($item->id === $rolePermission->id) {
+                    $item['included'] = true;
+                }
+            }
+        }
+
+        return Inertia::render('Roles/Edit', [
+            'permissionList' => $permissionList,
+            'role' => $role,
+            'rolePermissions' => $rolePermissions,
+        ]);
     }
 
     /**
@@ -98,7 +116,23 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:20',
+            'permissions' => 'required|array|min:1',
+            'permissions.*' => 'int',
+        ]);
+
+        $role = Role::findById($id);
+
+        $role->name = $request->name;
+
+        $role->save();
+
+        $permissions = Permission::query()->findMany($request->permissions);
+
+        $role->syncPermissions($permissions);
+
+        return redirect(route('roles.index'));
     }
 
     /**
