@@ -74,7 +74,7 @@ export default function Index({auth, can, roles, permissions}) {
                                         {
                                             can['role-delete'] &&
                                             <li>
-                                                <a className="tooltip tooltip-top" data-tip="Delete"
+                                                <a className="tooltip tooltip-top text-error" data-tip="Delete"
                                                    onClick={() => router.delete(route('roles.destroy', role.id))}>
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                          viewBox="0 0 24 24" strokeWidth="1.5"

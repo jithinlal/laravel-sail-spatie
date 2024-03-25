@@ -4,7 +4,7 @@ import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {toast} from "react-hot-toast";
 
 export default function Create({auth, permissions}) {
-    const {data, setData, post, processing, reset, errors} = useForm({
+    const {data, setData, post, processing, reset} = useForm({
         name: '',
         detail: ''
     })

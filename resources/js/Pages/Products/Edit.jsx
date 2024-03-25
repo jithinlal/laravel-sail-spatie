@@ -4,7 +4,7 @@ import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {toast} from "react-hot-toast";
 
 export default function Edit({auth, product, permissions}) {
-    const {data, setData, patch, processing, reset, errors} = useForm({
+    const {data, setData, patch, processing, reset} = useForm({
         name: product.name,
         detail: product.detail
     })

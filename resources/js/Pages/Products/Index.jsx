@@ -83,7 +83,7 @@ export default function Index({auth, can, products, permissions}) {
                                                 product.user.id === auth.user.id &&
                                                 can['product-delete'] &&
                                                 <li>
-                                                    <a className="tooltip tooltip-top" data-tip="Delete" onClick={() => router.delete(route('products.destroy', product.id))}>
+                                                    <a className="tooltip tooltip-top text-error" data-tip="Delete" onClick={() => router.delete(route('products.destroy', product.id))}>
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                              viewBox="0 0 24 24" strokeWidth="1.5"
                                                              stroke="currentColor" className="w-6 h-6">

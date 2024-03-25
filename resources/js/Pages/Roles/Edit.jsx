@@ -5,7 +5,7 @@ import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import toast from "react-hot-toast";
 
 export default function Edit({auth, permissions, permissionList, role, rolePermissions}) {
-    const {data, setData, patch, processing, reset, errors} = useForm({
+    const {data, setData, patch, processing, reset} = useForm({
         name: role.name,
         permissions: rolePermissions.map(item => item.id)
     })
