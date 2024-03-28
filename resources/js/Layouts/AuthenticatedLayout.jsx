@@ -64,6 +64,15 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                                     </a>
                                 </li>
                             }
+                            {
+                                permissions['user-list'] &&
+                                <li>
+                                    <a href={route('users.index')}
+                                       className={route().current('users.index') ? 'border border-neutral' : ''}>
+                                        Users
+                                    </a>
+                                </li>
+                            }
                         </ul>
                     </div>
                     <a className="btn btn-ghost text-xl" href="/">
@@ -99,6 +108,15 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                                 <a href={route('roles.index')}
                                    className={route().current('roles.index') ? 'border border-neutral' : ''}>
                                     Roles
+                                </a>
+                            </li>
+                        }
+                        {
+                            permissions['user-list'] &&
+                            <li className="mr-1">
+                                <a href={route('users.index')}
+                                   className={route().current('users.index') ? 'border border-neutral' : ''}>
+                                    Users
                                 </a>
                             </li>
                         }

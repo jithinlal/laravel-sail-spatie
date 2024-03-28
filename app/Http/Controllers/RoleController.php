@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -31,11 +29,6 @@ class RoleController extends Controller implements HasMiddleware
         $roles = Role::query()->orderBy('id', 'DESC')->paginate(50);
 
         return Inertia::render('Roles/Index', [
-            'can' => [
-                'role-create' => Auth::user()->can('role-create', User::class),
-                'role-edit' => Auth::user()->can('role-edit', User::class),
-                'role-delete' => Auth::user()->can('role-delete', User::class),
-            ],
             'roles' => $roles,
         ]);
     }

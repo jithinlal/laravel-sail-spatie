@@ -4,7 +4,7 @@ import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {router} from '@inertiajs/core'
 import TooltipText from "@/Components/TooltipText.jsx";
 
-export default function Index({auth, can, products, permissions}) {
+export default function Index({auth, products, permissions}) {
     return (
         <AuthenticatedLayout user={auth.user} permissions={permissions}>
             <Head title="Products"/>
@@ -17,7 +17,7 @@ export default function Index({auth, can, products, permissions}) {
                         </h1>
                     </div>
                     {
-                        can['product-create'] &&
+                        permissions['product-create'] &&
                         <PrimaryButton onClick={() => router.visit(route('products.create'))}>
                             Create Product
                         </PrimaryButton>
@@ -66,7 +66,7 @@ export default function Index({auth, can, products, permissions}) {
                                             </li>
                                             {
                                                 product.user.id === auth.user.id &&
-                                                can['product-edit'] &&
+                                                permissions['product-edit'] &&
                                                 <li>
                                                     <a className="tooltip tooltip-top" data-tip="Edit" onClick={() => router.visit(route('products.edit', {id: product.id}))}>
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -81,7 +81,7 @@ export default function Index({auth, can, products, permissions}) {
                                             }
                                             {
                                                 product.user.id === auth.user.id &&
-                                                can['product-delete'] &&
+                                                permissions['product-delete'] &&
                                                 <li>
                                                     <a className="tooltip tooltip-top text-error" data-tip="Delete" onClick={() => router.delete(route('products.destroy', product.id))}>
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -123,7 +123,7 @@ export default function Index({auth, can, products, permissions}) {
                                                     </li>
                                                     {
                                                         product.user.id === auth.user.id &&
-                                                        can['product-edit'] &&
+                                                        permissions['product-edit'] &&
                                                         <li>
                                                             <a className="tooltip tooltip-right" data-tip="Edit" onClick={() => router.visit(route('products.edit', {id: product.id}))}>
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -138,7 +138,7 @@ export default function Index({auth, can, products, permissions}) {
                                                     }
                                                     {
                                                         product.user.id === auth.user.id &&
-                                                        can['product-delete'] &&
+                                                        permissions['product-delete'] &&
                                                         <li>
                                                             <a className="tooltip tooltip-right" data-tip="Delete" onClick={() => router.delete(route('products.destroy', product.id))}>
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"

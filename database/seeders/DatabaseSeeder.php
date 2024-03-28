@@ -44,6 +44,22 @@ class DatabaseSeeder extends Seeder
             'title' => 'Delete products',
             'name' => 'product-delete',
         ],
+        [
+            'title' => 'List users',
+            'name' => 'user-list',
+        ],
+        [
+            'title' => 'Create users',
+            'name' => 'user-create',
+        ],
+        [
+            'title' => 'Edit users',
+            'name' => 'user-edit',
+        ],
+        [
+            'title' => 'Delete users',
+            'name' => 'user-delete',
+        ],
     ];
 
     /**

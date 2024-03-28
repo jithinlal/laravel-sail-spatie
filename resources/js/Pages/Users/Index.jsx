@@ -3,7 +3,7 @@ import {Head} from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {router} from '@inertiajs/core'
 
-export default function Index({auth, roles, permissions}) {
+export default function Index({auth, users, permissions}) {
     return (
         <AuthenticatedLayout user={auth.user} permissions={permissions}>
             <Head title="Roles"/>
@@ -12,13 +12,13 @@ export default function Index({auth, roles, permissions}) {
                 <div className="bg-primary flex items-center justify-between p-4 rounded-md">
                     <div className="font-bold">
                         <h1>
-                            Roles
+                            Users
                         </h1>
                     </div>
                     {
-                        permissions['role-create'] &&
-                        <PrimaryButton onClick={() => router.visit(route('roles.create'))}>
-                            Create Role
+                        permissions['user-create'] &&
+                        <PrimaryButton onClick={() => router.visit(route('users.create'))}>
+                            Create user
                         </PrimaryButton>
                     }
                 </div>
@@ -26,20 +26,26 @@ export default function Index({auth, roles, permissions}) {
                 <div className="overflow-x-auto h-full min-h-screen">
                     <table className="w-full table">
                         <thead>
-                            <tr>
-                                <th>
-                                    Name
-                                </th>
-                                <th className="flex items-center justify-center">
-                                    Actions
-                                </th>
-                            </tr>
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th className="flex items-center justify-center">
+                                Actions
+                            </th>
+                        </tr>
                         </thead>
                         <tbody className="bg-primary">
-                        {roles.data.map((role, index) => (
+                        {users.map((user, index) => user.id !== auth.user.id && (
                             <tr key={index}>
                                 <td>
-                                    {role.name}
+                                    {user.name}
+                                </td>
+                                <td>
+                                    {user.email}
                                 </td>
                                 <td>
                                     <ul className="menu menu-horizontal bg-primary rounded-box flex items-center justify-center">
@@ -57,10 +63,10 @@ export default function Index({auth, roles, permissions}) {
                                             </a>
                                         </li>
                                         {
-                                            permissions['role-edit'] &&
+                                            permissions['user-edit'] &&
                                             <li>
                                                 <a className="tooltip tooltip-top" data-tip="Edit"
-                                                   onClick={() => router.visit(route('roles.edit', {id: role.id}))}>
+                                                   onClick={() => router.visit(route('users.edit', {id: user.id}))}>
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                          viewBox="0 0 24 24" strokeWidth="1.5"
                                                          stroke="currentColor" className="w-6 h-6">
@@ -72,10 +78,10 @@ export default function Index({auth, roles, permissions}) {
                                             </li>
                                         }
                                         {
-                                            permissions['role-delete'] &&
+                                            permissions['user-delete'] &&
                                             <li>
                                                 <a className="tooltip tooltip-top text-error" data-tip="Delete"
-                                                   onClick={() => router.delete(route('roles.destroy', role.id))}>
+                                                   onClick={() => router.delete(route('users.destroy', user.id))}>
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                          viewBox="0 0 24 24" strokeWidth="1.5"
                                                          stroke="currentColor" className="w-6 h-6">
