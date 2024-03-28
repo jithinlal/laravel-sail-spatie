@@ -1,23 +1,24 @@
-import React from 'react'
-import {Head, useForm} from "@inertiajs/react";
+import React, {useState} from 'react'
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
+import {Head, useForm} from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
-import {toast} from "react-hot-toast";
+import toast from "react-hot-toast";
 
-export default function Create({auth, permissions, roles}) {
-    const {data, setData, post, processing, reset} = useForm({
-        name: '',
-        email: '',
-        role: ''
+export default function Edit({auth, permissions, roles, user, role}) {
+    console.log({role, roles, user})
+    const {data, setData, patch, processing, reset} = useForm({
+        name: user.name,
+        email: user.email,
+        role: role,
     })
     const submit = (e) => {
         e.preventDefault();
-        post(route('users.store'), {
+        patch(route('users.update', role.id), {
             onSuccess: () => {
-                toast.success('User created!')
+                toast.success('User updated!')
                 reset()
             },
-            onError: (errors) => {
+            onError: (errors) =>  {
                 let error = ''
                 Object.values(errors).forEach(err => {
                     error += err + '\n'
@@ -31,8 +32,8 @@ export default function Create({auth, permissions, roles}) {
     };
 
     return (
-        <AuthenticatedLayout user={auth.user} permissions={permissions}>
-            <Head title="Create user"/>
+        <AuthenticatedLayout permissions={permissions} user={auth.user}>
+            <Head title="Update user"/>
 
             <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
                 <form onSubmit={submit}>
@@ -49,16 +50,16 @@ export default function Create({auth, permissions, roles}) {
                         onChange={e => setData('email', e.target.value)}
                     />
                     <div className="w-full flex flex-wrap m-1">
-                        <select className="select select-bordered m-1 w-full max-w-md" onChange={e => setData('role', e.target.value)}>
-                            <option disabled selected>Role</option>
+                        <select className="select select-bordered m-1 w-full max-w-md"
+                                onChange={e => setData('role', e.target.value)}>
                             {roles.map(role => (
-                                <option key={role.id} value={role.id}>
+                                <option key={role.id} value={role.id} selected={role.id === role}>
                                     {role.name}
                                 </option>
                             ))}
                         </select>
                     </div>
-                    <PrimaryButton className="mt-4 m-2" disabled={processing}>Add</PrimaryButton>
+                    <PrimaryButton className="mt-4 m-2" disabled={processing}>Update</PrimaryButton>
                 </form>
             </div>
         </AuthenticatedLayout>
