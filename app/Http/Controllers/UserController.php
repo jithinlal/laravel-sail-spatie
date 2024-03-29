@@ -56,8 +56,11 @@ class UserController extends Controller implements HasMiddleware
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email',
-            'role' => 'int',
+            'roles' => 'required|array|min:1',
+            'roles.*' => 'int',
         ]);
+
+        $roles = Role::find([$request->roles]);
 
         $user = User::create([
             'name' => $request->input('name'),
@@ -65,9 +68,13 @@ class UserController extends Controller implements HasMiddleware
             'password' => Hash::make(Str::random()),
         ]);
 
-        $role = Role::findById($request->role);
+        $assignedRoles = [];
 
-        $user->assignRole($role->name);
+        foreach ($roles as $role) {
+            $assignedRoles[] = $role->id;
+        }
+
+        $user->assignRole($assignedRoles);
 
         return redirect(route('users.index'));
     }
@@ -87,14 +94,12 @@ class UserController extends Controller implements HasMiddleware
     {
         $roles = Role::all();
 
-        $user = User::find($id);
-
-        $role = $user->getRoleNames();
+        $user = User::with('roles')->find($id);
 
         return Inertia::render('Users/Edit', [
             'roles' => $roles,
             'user' => $user,
-            'role' => $role,
+            'assignedRoles' => $user->roles,
         ]);
     }
 
