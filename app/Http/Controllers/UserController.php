@@ -96,10 +96,16 @@ class UserController extends Controller implements HasMiddleware
 
         $user = User::with('roles')->find($id);
 
+        $assignedRoleIds = [];
+        foreach ($user->roles as $role) {
+            $assignedRoleIds[] = $role->id;
+        }
+
         return Inertia::render('Users/Edit', [
             'roles' => $roles,
             'user' => $user,
             'assignedRoles' => $user->roles,
+            'assignedRoleIds' => $assignedRoleIds,
         ]);
     }
 
@@ -108,7 +114,31 @@ class UserController extends Controller implements HasMiddleware
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'roles' => 'required|array|min:1',
+            'roles.*' => 'int',
+        ]);
+
+        $roles = Role::find([$request->roles]);
+
+        $user = User::find($id);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        $user->save();
+
+        $assignedRoles = [];
+
+        foreach ($roles as $role) {
+            $assignedRoles[] = $role->id;
+        }
+
+        $user->syncRoles($assignedRoles);
+
+        return redirect(route('users.index'));
     }
 
     /**
