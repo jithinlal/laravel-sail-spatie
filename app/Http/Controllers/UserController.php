@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -60,21 +61,23 @@ class UserController extends Controller implements HasMiddleware
             'roles.*' => 'int',
         ]);
 
-        $roles = Role::find([$request->roles]);
+        DB::transaction(function () use ($request) {
+            $roles = Role::find([$request->roles]);
 
-        $user = User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make(Str::random()),
-        ]);
+            $user = User::create([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => Hash::make(Str::random()),
+            ]);
 
-        $assignedRoles = [];
+            $assignedRoles = [];
 
-        foreach ($roles as $role) {
-            $assignedRoles[] = $role->id;
-        }
+            foreach ($roles as $role) {
+                $assignedRoles[] = $role->id;
+            }
 
-        $user->assignRole($assignedRoles);
+            $user->assignRole($assignedRoles);
+        });
 
         return redirect(route('users.index'));
     }
@@ -121,22 +124,24 @@ class UserController extends Controller implements HasMiddleware
             'roles.*' => 'int',
         ]);
 
-        $roles = Role::find([$request->roles]);
+        DB::transaction(function () use ($request, $id) {
+            $roles = Role::find([$request->roles]);
 
-        $user = User::find($id);
+            $user = User::find($id);
 
-        $user->name = $request->name;
-        $user->email = $request->email;
+            $user->name = $request->name;
+            $user->email = $request->email;
 
-        $user->save();
+            $user->save();
 
-        $assignedRoles = [];
+            $assignedRoles = [];
 
-        foreach ($roles as $role) {
-            $assignedRoles[] = $role->id;
-        }
+            foreach ($roles as $role) {
+                $assignedRoles[] = $role->id;
+            }
 
-        $user->syncRoles($assignedRoles);
+            $user->syncRoles($assignedRoles);
+        });
 
         return redirect(route('users.index'));
     }
@@ -144,8 +149,10 @@ class UserController extends Controller implements HasMiddleware
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return redirect(route('users.index'));
     }
 }
