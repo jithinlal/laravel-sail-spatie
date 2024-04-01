@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserCreated;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
-use function Illuminate\Support\Str;
 
 class UserController extends Controller implements HasMiddleware
 {
@@ -64,10 +65,12 @@ class UserController extends Controller implements HasMiddleware
         DB::transaction(function () use ($request) {
             $roles = Role::find([$request->roles]);
 
+            $password = Str::random();
+
             $user = User::create([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
-                'password' => Hash::make(Str::random()),
+                'password' => Hash::make($password),
             ]);
 
             $assignedRoles = [];
@@ -77,6 +80,8 @@ class UserController extends Controller implements HasMiddleware
             }
 
             $user->assignRole($assignedRoles);
+
+            Mail::to($user)->queue(new UserCreated($password));
         });
 
         return redirect(route('users.index'));
