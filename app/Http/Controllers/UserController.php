@@ -2,16 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserCreated;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Inertia\Inertia;
+use Spatie\Permission\Models\Role;
 
-class UserController extends Controller
+class UserController extends Controller implements HasMiddleware
 {
+    public static function middleware()
+    {
+        return [
+            new Middleware('permission:user-list|user-create|user-edit|user-delete', only: ['index', 'store']),
+            new Middleware('permission:user-create', only: ['create', 'store']),
+            new Middleware('permission:user-edit', only: ['edit', 'update']),
+            new Middleware('permission:user-delete', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $users = User::all();
+
+        return Inertia::render('Users/Index', [
+            'users' => $users,
+        ]);
     }
 
     /**
@@ -19,7 +43,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Role::all();
+
+        return Inertia::render('Users/Create', [
+            'roles' => $roles,
+        ]);
     }
 
     /**
@@ -27,7 +55,36 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'roles' => 'required|array|min:1',
+            'roles.*' => 'int',
+        ]);
+
+        DB::transaction(function () use ($request) {
+            $roles = Role::find([$request->roles]);
+
+            $password = Str::random();
+
+            $user = User::create([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($password),
+            ]);
+
+            $assignedRoles = [];
+
+            foreach ($roles as $role) {
+                $assignedRoles[] = $role->id;
+            }
+
+            $user->assignRole($assignedRoles);
+
+            Mail::to($user)->queue(new UserCreated($password));
+        });
+
+        return redirect(route('users.index'));
     }
 
     /**
@@ -43,7 +100,21 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $roles = Role::all();
+
+        $user = User::with('roles')->find($id);
+
+        $assignedRoleIds = [];
+        foreach ($user->roles as $role) {
+            $assignedRoleIds[] = $role->id;
+        }
+
+        return Inertia::render('Users/Edit', [
+            'roles' => $roles,
+            'user' => $user,
+            'assignedRoles' => $user->roles,
+            'assignedRoleIds' => $assignedRoleIds,
+        ]);
     }
 
     /**
@@ -51,14 +122,42 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'roles' => 'required|array|min:1',
+            'roles.*' => 'int',
+        ]);
+
+        DB::transaction(function () use ($request, $id) {
+            $roles = Role::find([$request->roles]);
+
+            $user = User::find($id);
+
+            $user->name = $request->name;
+            $user->email = $request->email;
+
+            $user->save();
+
+            $assignedRoles = [];
+
+            foreach ($roles as $role) {
+                $assignedRoles[] = $role->id;
+            }
+
+            $user->syncRoles($assignedRoles);
+        });
+
+        return redirect(route('users.index'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return redirect(route('users.index'));
     }
 }

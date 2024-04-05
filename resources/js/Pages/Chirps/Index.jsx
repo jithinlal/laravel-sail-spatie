@@ -5,7 +5,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import { useForm, Head } from '@inertiajs/react';
 import Chirp from "@/Components/Chirp.jsx";
 
-export default function Index({ auth, chirps }) {
+export default function Index({auth, chirps, permissions}) {
     const { data, setData, post, processing, reset, errors } = useForm({
         message: '',
     });
@@ -16,7 +16,7 @@ export default function Index({ auth, chirps }) {
     };
 
     return (
-        <AuthenticatedLayout user={auth.user}>
+        <AuthenticatedLayout user={auth.user} permissions={permissions}>
             <Head title="Chirps" />
 
             <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
@@ -24,7 +24,7 @@ export default function Index({ auth, chirps }) {
                     <textarea
                         value={data.message}
                         placeholder="What's on your mind?"
-                        className="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+                        className="textarea textarea-primary w-full rounded-md shadow-sm"
                         onChange={e => setData('message', e.target.value)}
                     ></textarea>
                     <InputError message={errors.message} className="mt-2"/>
@@ -38,5 +38,5 @@ export default function Index({ auth, chirps }) {
                 </div>
             </div>
         </AuthenticatedLayout>
-);
+    );
 }

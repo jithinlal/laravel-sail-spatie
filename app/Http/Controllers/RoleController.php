@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller implements HasMiddleware
@@ -30,11 +29,6 @@ class RoleController extends Controller implements HasMiddleware
         $roles = Role::query()->orderBy('id', 'DESC')->paginate(50);
 
         return Inertia::render('Roles/Index', [
-            'can' => [
-                'role-create' => Auth::user()->can('role-create', User::class),
-                'role-edit' => Auth::user()->can('role-edit', User::class),
-                'role-delete' => Auth::user()->can('role-delete', User::class),
-            ],
             'roles' => $roles,
         ]);
     }
@@ -44,7 +38,11 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function create()
     {
-        //
+        $permissions = Permission::all();
+
+        return Inertia::render('Roles/Create', [
+            'permissionList' => $permissions,
+        ]);
     }
 
     /**
@@ -52,7 +50,24 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:20',
+            'permissions' => 'required|array|min:1',
+            'permissions.*' => 'int',
+        ]);
+
+        $role = new Role;
+
+        $role->name = $request->name;
+        $role->guard_name = 'web';
+
+        $role->save();
+
+        $permissions = Permission::query()->findMany($request->permissions);
+
+        $role->syncPermissions($permissions);
+
+        return redirect(route('roles.index'));
     }
 
     /**
@@ -68,7 +83,25 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function edit(string $id)
     {
-        //
+        $role = Role::findById($id);
+
+        $permissionList = Permission::all();
+
+        $rolePermissions = $role->permissions()->get(['id', 'name', 'title']);
+
+        foreach ($permissionList as $item) {
+            foreach ($rolePermissions as $rolePermission) {
+                if ($item->id === $rolePermission->id) {
+                    $item['included'] = true;
+                }
+            }
+        }
+
+        return Inertia::render('Roles/Edit', [
+            'permissionList' => $permissionList,
+            'role' => $role,
+            'rolePermissions' => $rolePermissions,
+        ]);
     }
 
     /**
@@ -76,14 +109,32 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:20',
+            'permissions' => 'required|array|min:1',
+            'permissions.*' => 'int',
+        ]);
+
+        $role = Role::findById($id);
+
+        $role->name = $request->name;
+
+        $role->save();
+
+        $permissions = Permission::query()->findMany($request->permissions);
+
+        $role->syncPermissions($permissions);
+
+        return redirect(route('roles.index'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Role $role)
     {
-        //
+        $role->delete();
+
+        return redirect(route('roles.index'));
     }
 }

@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class ProductController extends Controller implements HasMiddleware
@@ -30,11 +28,6 @@ class ProductController extends Controller implements HasMiddleware
         $products = Product::with('user:id,name')->latest()->paginate(50);
 
         return Inertia::render('Products/Index', [
-            'can' => [
-                'product-create' => Auth::user()->can('product-create', User::class),
-                'product-edit' => Auth::user()->can('product-edit', User::class),
-                'product-delete' => Auth::user()->can('product-delete', User::class),
-            ],
             'products' => $products,
         ]);
     }
@@ -54,7 +47,7 @@ class ProductController extends Controller implements HasMiddleware
     {
         $validated = $request->validate([
             'name' => 'required|string|max:20',
-            'detail' => 'required|string|max:255'
+            'detail' => 'required|string|max:255',
         ]);
 
         $request->user()->products()->create($validated);
@@ -78,7 +71,7 @@ class ProductController extends Controller implements HasMiddleware
         $product = Product::with('user:id,name')->find($id);
 
         return Inertia::render('Products/Edit', [
-            'product' => $product
+            'product' => $product,
         ]);
     }
 
@@ -89,7 +82,7 @@ class ProductController extends Controller implements HasMiddleware
     {
         $validated = $request->validate([
             'name' => 'required|string|max:20',
-            'detail' => 'required|string|max:255'
+            'detail' => 'required|string|max:255',
         ]);
 
         $product->update($validated);
