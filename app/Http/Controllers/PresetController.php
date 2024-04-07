@@ -46,7 +46,7 @@ class PresetController extends Controller implements HasMiddleware
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:20',
+            'name' => 'required|string|max:50',
             'detail' => 'required|string|max:255',
         ]);
 
@@ -81,7 +81,7 @@ class PresetController extends Controller implements HasMiddleware
     public function update(Request $request, Preset $preset)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:20',
+            'name' => 'required|string|max:50',
             'detail' => 'required|string|max:255',
         ]);
 
