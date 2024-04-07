@@ -131,6 +131,15 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                                 </a>
                             </li>
                         }
+                        {
+                            permissions['preset-read'] &&
+                            <li>
+                                <a href={route('presets.index')}
+                                    className={route().current('presets.index') ? 'border border-neutral' : ''}>
+                                    Presets
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
