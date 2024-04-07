@@ -40,7 +40,7 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                 <div className="navbar-end">
                     <div className="dropdown dropdown-end">
                         <div tabIndex={0} role="button" className="btn btn-ghost">
-                        Profile
+                            Profile
                         </div>
                         <ul tabIndex={0}
                             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow rounded-box w-52 bg-primary border border-secondary">
@@ -65,12 +65,8 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                                 </label>
                             </li>
                             <li>
-                                <button type="button" className="justify-center" onClick={() => {
-                                    axios.post(route('logout')).then(() => {
-                                        Inertia.reload({
-                                            preserveState: false
-                                        });
-                                    })
+                                <button type="button" className="justify-center" onClick={async () => {
+                                    await axios.post(route('logout')).then(() => window.location.reload())
                                 }}>
                                     Logout
                                 </button>
@@ -94,13 +90,13 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                     <ul className="menu p-4 lg:w-60 w-40 min-h-full bg-base-200 text-base-content">
                         <li>
                             <a href={route('dashboard')}
-                               className={route().current('dashboard') ? 'border border-neutral' : ''}>
+                               className={route().current('dashboard') ? 'active' : ''}>
                                 Dashboard
                             </a>
                         </li>
                         <li>
                             <a href={route('chirps.index')}
-                               className={route().current('chirps.index') ? 'border border-neutral' : ''}>
+                               className={route().current('chirps.index') ? 'active' : ''}>
                                 Chirps
                             </a>
                         </li>
@@ -108,36 +104,48 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                             permissions['product-read'] &&
                             <li>
                                 <a href={route('products.index')}
-                                   className={route().current('products.index') ? 'border border-neutral' : ''}>
+                                   className={route().current('products.index') ? 'active' : ''}>
                                     Products
                                 </a>
                             </li>
                         }
                         {
-                            permissions['role-read'] &&
+                            (permissions['role-read'] || permissions['user-read'] || permissions['preset-read']) &&
                             <li>
-                                <a href={route('roles.index')}
-                                   className={route().current('roles.index') ? 'border border-neutral' : ''}>
-                                    Roles
-                                </a>
-                            </li>
-                        }
-                        {
-                            permissions['user-read'] &&
-                            <li>
-                                <a href={route('users.index')}
-                                   className={route().current('users.index') ? 'border border-neutral' : ''}>
-                                    Users
-                                </a>
-                            </li>
-                        }
-                        {
-                            permissions['preset-read'] &&
-                            <li>
-                                <a href={route('presets.index')}
-                                    className={route().current('presets.index') ? 'border border-neutral' : ''}>
-                                    Presets
-                                </a>
+                                <details open>
+                                    <summary className="rounded-lg cursor-pointer">
+                                        Admin
+                                    </summary>
+                                    <ul>
+                                        {
+                                            permissions['role-read'] &&
+                                            <li>
+                                                <a href={route('roles.index')}
+                                                   className={route().current('roles.index') ? 'active' : ''}>
+                                                    Roles
+                                                </a>
+                                            </li>
+                                        }
+                                        {
+                                            permissions['user-read'] &&
+                                            <li>
+                                                <a href={route('users.index')}
+                                                   className={route().current('users.index') ? 'active' : ''}>
+                                                    Users
+                                                </a>
+                                            </li>
+                                        }
+                                        {
+                                            permissions['preset-read'] &&
+                                            <li>
+                                                <a href={route('presets.index')}
+                                                   className={route().current('presets.index') ? 'active' : ''}>
+                                                    Presets
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </details>
                             </li>
                         }
                     </ul>
