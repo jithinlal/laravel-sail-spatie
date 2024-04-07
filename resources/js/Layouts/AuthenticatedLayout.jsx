@@ -105,7 +105,7 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                             </a>
                         </li>
                         {
-                            permissions['product-list'] &&
+                            permissions['product-read'] &&
                             <li>
                                 <a href={route('products.index')}
                                    className={route().current('products.index') ? 'border border-neutral' : ''}>
@@ -114,7 +114,7 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                             </li>
                         }
                         {
-                            permissions['role-list'] &&
+                            permissions['role-read'] &&
                             <li>
                                 <a href={route('roles.index')}
                                    className={route().current('roles.index') ? 'border border-neutral' : ''}>
@@ -123,7 +123,7 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                             </li>
                         }
                         {
-                            permissions['user-list'] &&
+                            permissions['user-read'] &&
                             <li>
                                 <a href={route('users.index')}
                                    className={route().current('users.index') ? 'border border-neutral' : ''}>

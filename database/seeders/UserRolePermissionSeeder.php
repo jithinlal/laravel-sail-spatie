@@ -13,52 +13,36 @@ class UserRolePermissionSeeder extends Seeder
 {
     private array $permissions = [
         [
-            'title' => 'List roles',
-            'name' => 'role-list',
+            'title' => 'Get role',
+            'name' => 'role-read',
         ],
         [
-            'title' => 'Create roles',
-            'name' => 'role-create',
+            'title' => 'Create role',
+            'name' => 'role-write',
         ],
         [
-            'title' => 'Edit roles',
-            'name' => 'role-edit',
+            'title' => 'Get product',
+            'name' => 'product-read',
         ],
         [
-            'title' => 'Delete roles',
-            'name' => 'role-delete',
+            'title' => 'Create product',
+            'name' => 'product-write',
         ],
         [
-            'title' => 'List products',
-            'name' => 'product-list',
+            'title' => 'Get user',
+            'name' => 'user-read',
         ],
         [
-            'title' => 'Create products',
-            'name' => 'product-create',
+            'title' => 'Create user',
+            'name' => 'user-write',
         ],
         [
-            'title' => 'Edit products',
-            'name' => 'product-edit',
+            'title' => 'Get preset',
+            'name' => 'preset-read',
         ],
         [
-            'title' => 'Delete products',
-            'name' => 'product-delete',
-        ],
-        [
-            'title' => 'List users',
-            'name' => 'user-list',
-        ],
-        [
-            'title' => 'Create users',
-            'name' => 'user-create',
-        ],
-        [
-            'title' => 'Edit users',
-            'name' => 'user-edit',
-        ],
-        [
-            'title' => 'Delete users',
-            'name' => 'user-delete',
+            'title' => 'Create preset',
+            'name' => 'preset-write',
         ],
     ];
 
@@ -89,7 +73,7 @@ class UserRolePermissionSeeder extends Seeder
         ]);
 
         $normalRole = Role::create(['name' => 'Normal']);
-        $permission = Permission::query()->where(['name' => 'product-list', 'guard_name' => Guard::getDefaultName(Permission::class)])->get();
+        $permission = Permission::query()->where(['name' => 'product-read', 'guard_name' => Guard::getDefaultName(Permission::class)])->get();
         $normalRole->syncPermissions($permission);
         $normalUser->assignRole([$normalRole->id]);
     }
