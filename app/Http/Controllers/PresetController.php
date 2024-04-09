@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
+use function Termwind\render;
 
 class PresetController extends Controller implements HasMiddleware
 {
@@ -25,7 +26,7 @@ class PresetController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        $presets = Preset::all();
+        $presets = Preset::orderBy('created_at', 'desc')->get();
 
         return Inertia::render('Presets/Index', [
             'presets' => $presets,

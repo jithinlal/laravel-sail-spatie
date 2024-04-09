@@ -9,6 +9,7 @@ export default function Edit({auth, preset, permissions}) {
         detail: preset.detail
     })
     const submit = (e) => {
+        console.log({data})
         e.preventDefault();
         patch(route('presets.update',  preset.id), {
             onSuccess: () => {
