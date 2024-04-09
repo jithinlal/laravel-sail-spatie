@@ -17,7 +17,7 @@ export default function Index({auth, products, permissions}) {
                         </h1>
                     </div>
                     {
-                        permissions['product-create'] &&
+                        permissions['product-write'] &&
                         <PrimaryButton onClick={() => router.visit(route('products.create'))}>
                             Create Product
                         </PrimaryButton>
@@ -66,7 +66,7 @@ export default function Index({auth, products, permissions}) {
                                             </li>
                                             {
                                                 product.user.id === auth.user.id &&
-                                                permissions['product-edit'] &&
+                                                permissions['product-write'] &&
                                                 <li>
                                                     <a className="tooltip tooltip-top" data-tip="Edit" onClick={() => router.visit(route('products.edit', {id: product.id}))}>
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -81,7 +81,7 @@ export default function Index({auth, products, permissions}) {
                                             }
                                             {
                                                 product.user.id === auth.user.id &&
-                                                permissions['product-delete'] &&
+                                                permissions['product-write'] &&
                                                 <li>
                                                     <a className="tooltip tooltip-top text-error" data-tip="Delete" onClick={() => router.delete(route('products.destroy', product.id))}>
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -123,7 +123,7 @@ export default function Index({auth, products, permissions}) {
                                                     </li>
                                                     {
                                                         product.user.id === auth.user.id &&
-                                                        permissions['product-edit'] &&
+                                                        permissions['product-write'] &&
                                                         <li>
                                                             <a className="tooltip tooltip-right" data-tip="Edit" onClick={() => router.visit(route('products.edit', {id: product.id}))}>
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -138,7 +138,7 @@ export default function Index({auth, products, permissions}) {
                                                     }
                                                     {
                                                         product.user.id === auth.user.id &&
-                                                        permissions['product-delete'] &&
+                                                        permissions['product-write'] &&
                                                         <li>
                                                             <a className="tooltip tooltip-right" data-tip="Delete" onClick={() => router.delete(route('products.destroy', product.id))}>
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"

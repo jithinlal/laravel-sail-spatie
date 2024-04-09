@@ -2,23 +2,24 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head} from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {router} from '@inertiajs/core'
+import TooltipText from "@/Components/TooltipText.jsx";
 
-export default function Index({auth, users, permissions}) {
+export default function Index({auth, presets, permissions}) {
     return (
         <AuthenticatedLayout user={auth.user} permissions={permissions}>
-            <Head title="Roles"/>
+            <Head title="Presets"/>
 
             <div className="max-w-3xl mx-auto p-4 sm:p-6 lg:p-8">
                 <div className="bg-primary flex items-center justify-between p-4 rounded-md">
                     <div className="font-bold">
                         <h1>
-                            Users
+                            Presets
                         </h1>
                     </div>
                     {
-                        permissions['user-create'] &&
-                        <PrimaryButton onClick={() => router.visit(route('users.create'))}>
-                            Create user
+                        permissions['preset-write'] &&
+                        <PrimaryButton onClick={() => router.visit(route('presets.create'))}>
+                            Create Preset
                         </PrimaryButton>
                     }
                 </div>
@@ -31,7 +32,7 @@ export default function Index({auth, users, permissions}) {
                                 Name
                             </th>
                             <th>
-                                Email
+                                Detail
                             </th>
                             <th className="flex items-center justify-center">
                                 Actions
@@ -39,13 +40,13 @@ export default function Index({auth, users, permissions}) {
                         </tr>
                         </thead>
                         <tbody className="bg-primary">
-                        {users.map((user, index) => user.id !== auth.user.id && (
+                        {presets.map((preset, index) => (
                             <tr key={index}>
                                 <td>
-                                    {user.name}
+                                    {preset.name}
                                 </td>
                                 <td>
-                                    {user.email}
+                                    <TooltipText text={preset.detail} limit={50}/>
                                 </td>
                                 <td>
                                     <div className="hidden md:block">
@@ -60,14 +61,13 @@ export default function Index({auth, users, permissions}) {
                                                         <path strokeLinecap="round" strokeLinejoin="round"
                                                               d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                                                     </svg>
-
                                                 </a>
                                             </li>
                                             {
-                                                permissions['user-write'] &&
+                                                permissions['preset-write'] &&
                                                 <li>
                                                     <a className="tooltip tooltip-top" data-tip="Edit"
-                                                       onClick={() => router.visit(route('users.edit', {id: user.id}))}>
+                                                       onClick={() => router.visit(route('presets.edit', {id: preset.id}))}>
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                              viewBox="0 0 24 24" strokeWidth="1.5"
                                                              stroke="currentColor" className="w-6 h-6">
@@ -79,10 +79,10 @@ export default function Index({auth, users, permissions}) {
                                                 </li>
                                             }
                                             {
-                                                permissions['user-write'] &&
+                                                permissions['preset-write'] &&
                                                 <li>
                                                     <a className="tooltip tooltip-top text-error" data-tip="Delete"
-                                                       onClick={() => router.delete(route('users.destroy', user.id))}>
+                                                       onClick={() => router.delete(route('presets.destroy', preset.id))}>
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                              viewBox="0 0 24 24" strokeWidth="1.5"
                                                              stroke="currentColor" className="w-6 h-6">
@@ -119,10 +119,10 @@ export default function Index({auth, users, permissions}) {
                                                         </a>
                                                     </li>
                                                     {
-                                                        permissions['user-write'] &&
+                                                        permissions['preset-write'] &&
                                                         <li>
                                                             <a className="tooltip tooltip-right" data-tip="Edit"
-                                                               onClick={() => router.visit(route('users.edit', {id: user.id}))}>
+                                                               onClick={() => router.visit(route('presets.edit', {id: preset.id}))}>
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                      viewBox="0 0 24 24" strokeWidth="1.5"
                                                                      stroke="currentColor" className="w-6 h-6">
@@ -134,10 +134,10 @@ export default function Index({auth, users, permissions}) {
                                                         </li>
                                                     }
                                                     {
-                                                        permissions['user-write'] &&
+                                                        permissions['preset-write'] &&
                                                         <li>
                                                             <a className="tooltip tooltip-right" data-tip="Delete"
-                                                               onClick={() => router.delete(route('users.destroy', user.id))}>
+                                                               onClick={() => router.delete(route('presets.destroy', preset.id))}>
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                      viewBox="0 0 24 24" strokeWidth="1.5"
                                                                      stroke="currentColor" className="w-6 h-6">
