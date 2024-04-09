@@ -31,7 +31,7 @@ class UserController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        $users = User::orderBy('created_at', 'desc')->get();
+        $users = User::orderBy('created_at', 'desc')->paginate(10);
 
         return Inertia::render('Users/Index', [
             'users' => $users,

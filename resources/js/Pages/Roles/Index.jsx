@@ -2,6 +2,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head} from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {router} from '@inertiajs/core'
+import Pagination from "@/Components/Pagination.jsx";
 
 export default function Index({auth, roles, permissions}) {
     return (
@@ -150,6 +151,15 @@ export default function Index({auth, roles, permissions}) {
                         ))}
                         </tbody>
                     </table>
+                    <div className="flex justify-center align-items">
+                        <Pagination
+                            className="mt-5"
+                            currentPage={roles.current_page}
+                            prevPageUrl={roles.prev_page_url}
+                            nextPageUrl={roles.next_page_url}
+                            totalPages={roles.last_page}
+                        />
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>

@@ -3,6 +3,7 @@ import {Head} from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {router} from '@inertiajs/core'
 import TooltipText from "@/Components/TooltipText.jsx";
+import Pagination from "@/Components/Pagination.jsx";
 
 export default function Index({auth, presets, permissions}) {
     return (
@@ -40,7 +41,7 @@ export default function Index({auth, presets, permissions}) {
                         </tr>
                         </thead>
                         <tbody className="bg-primary">
-                        {presets.map((preset, index) => (
+                        {presets.data.map((preset, index) => (
                             <tr key={index}>
                                 <td>
                                     {preset.name}
@@ -156,6 +157,15 @@ export default function Index({auth, presets, permissions}) {
                         ))}
                         </tbody>
                     </table>
+                    <div className="flex justify-center align-items">
+                        <Pagination
+                            className="mt-5"
+                            currentPage={presets.current_page}
+                            prevPageUrl={presets.prev_page_url}
+                            nextPageUrl={presets.next_page_url}
+                            totalPages={presets.last_page}
+                        />
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>

@@ -3,6 +3,7 @@ import {Head} from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {router} from '@inertiajs/core'
 import TooltipText from "@/Components/TooltipText.jsx";
+import Pagination from "@/Components/Pagination.jsx";
 
 export default function Index({auth, products, permissions}) {
     return (
@@ -159,6 +160,15 @@ export default function Index({auth, products, permissions}) {
                         ))}
                         </tbody>
                     </table>
+                    <div className="flex justify-center align-items">
+                        <Pagination
+                            className="mt-5"
+                            currentPage={products.current_page}
+                            prevPageUrl={products.prev_page_url}
+                            nextPageUrl={products.next_page_url}
+                            totalPages={products.last_page}
+                        />
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>

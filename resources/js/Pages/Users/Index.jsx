@@ -2,6 +2,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head} from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {router} from '@inertiajs/core'
+import Pagination from "@/Components/Pagination.jsx";
 
 export default function Index({auth, users, permissions}) {
     return (
@@ -39,7 +40,7 @@ export default function Index({auth, users, permissions}) {
                         </tr>
                         </thead>
                         <tbody className="bg-primary">
-                        {users.map((user, index) => user.id !== auth.user.id && (
+                        {users.data.map((user, index) => user.id !== auth.user.id && (
                             <tr key={index}>
                                 <td>
                                     {user.name}
@@ -156,6 +157,15 @@ export default function Index({auth, users, permissions}) {
                         ))}
                         </tbody>
                     </table>
+                    <div className="flex justify-center align-items">
+                        <Pagination
+                            className="mt-5"
+                            currentPage={users.current_page}
+                            prevPageUrl={users.prev_page_url}
+                            nextPageUrl={users.next_page_url}
+                            totalPages={users.last_page}
+                        />
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>

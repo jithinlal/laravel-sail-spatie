@@ -26,7 +26,7 @@ class PresetController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        $presets = Preset::orderBy('created_at', 'desc')->get();
+        $presets = Preset::orderBy('created_at', 'desc')->paginate(10);
 
         return Inertia::render('Presets/Index', [
             'presets' => $presets,

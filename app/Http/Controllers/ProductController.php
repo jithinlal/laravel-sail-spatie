@@ -25,7 +25,7 @@ class ProductController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        $products = Product::with('user:id,name')->latest()->paginate(50);
+        $products = Product::with('user:id,name')->latest()->paginate(10);
 
         return Inertia::render('Products/Index', [
             'products' => $products,
