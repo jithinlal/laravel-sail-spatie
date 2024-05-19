@@ -13,8 +13,10 @@ class ProductController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('permission:product-list|product-create', only: ['index', 'store']),
-            new Middleware('permission:product-create', only: ['create', 'store', 'edit', 'update', 'destroy']),
+            new Middleware('permission:product-read|product-write', only: ['index', 'store']),
+            new Middleware('permission:product-write', only: ['create', 'store']),
+            new Middleware('permission:product-write', only: ['edit', 'update']),
+            new Middleware('permission:product-write', only: ['destroy']),
         ];
     }
 
@@ -23,7 +25,7 @@ class ProductController extends Controller implements HasMiddleware
      */
     public function index(): \Inertia\Response
     {
-        $products = Product::with('user:id,name')->latest()->paginate(50);
+        $products = Product::with('user:id,name')->latest()->paginate(10);
 
         return Inertia::render('Products/Index', [
             'products' => $products,

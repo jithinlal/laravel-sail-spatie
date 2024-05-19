@@ -5,22 +5,22 @@ import {router} from '@inertiajs/core'
 import TooltipText from "@/Components/TooltipText.jsx";
 import Pagination from "@/Components/Pagination.jsx";
 
-export default function Index({auth, products, permissions}) {
+export default function Index({auth, presets, permissions}) {
     return (
         <AuthenticatedLayout user={auth.user} permissions={permissions}>
-            <Head title="Products"/>
+            <Head title="Presets"/>
 
             <div className="max-w-3xl mx-auto p-4 sm:p-6 lg:p-8">
                 <div className="bg-primary flex items-center justify-between p-4 rounded-md">
                     <div className="font-bold">
                         <h1>
-                            Products
+                            Presets
                         </h1>
                     </div>
                     {
-                        permissions['product-write'] &&
-                        <PrimaryButton onClick={() => router.visit(route('products.create'))}>
-                            Create Product
+                        permissions['preset-write'] &&
+                        <PrimaryButton onClick={() => router.visit(route('presets.create'))}>
+                            Create Preset
                         </PrimaryButton>
                     }
                 </div>
@@ -28,26 +28,26 @@ export default function Index({auth, products, permissions}) {
                 <div className="overflow-x-auto h-full min-h-screen">
                     <table className="w-full table">
                         <thead>
-                            <tr>
-                                <th>
-                                    Name
-                                </th>
-                                <th>
-                                    Detail
-                                </th>
-                                <th className="flex items-center justify-center">
-                                    Actions
-                                </th>
-                            </tr>
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Detail
+                            </th>
+                            <th className="flex items-center justify-center">
+                                Actions
+                            </th>
+                        </tr>
                         </thead>
                         <tbody className="bg-primary">
-                        {products.data.map((product, index) => (
+                        {presets.data.map((preset, index) => (
                             <tr key={index}>
                                 <td>
-                                    {product.name}
+                                    {preset.name}
                                 </td>
                                 <td>
-                                    <TooltipText text={product.detail} limit={30}/>
+                                    <TooltipText text={preset.detail} limit={50}/>
                                 </td>
                                 <td>
                                     <div className="hidden md:block">
@@ -62,14 +62,13 @@ export default function Index({auth, products, permissions}) {
                                                         <path strokeLinecap="round" strokeLinejoin="round"
                                                               d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                                                     </svg>
-
                                                 </a>
                                             </li>
                                             {
-                                                product.user.id === auth.user.id &&
-                                                permissions['product-write'] &&
+                                                permissions['preset-write'] &&
                                                 <li>
-                                                    <a className="tooltip tooltip-top" data-tip="Edit" onClick={() => router.visit(route('products.edit', {id: product.id}))}>
+                                                    <a className="tooltip tooltip-top" data-tip="Edit"
+                                                       onClick={() => router.visit(route('presets.edit', {id: preset.id}))}>
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                              viewBox="0 0 24 24" strokeWidth="1.5"
                                                              stroke="currentColor" className="w-6 h-6">
@@ -81,17 +80,16 @@ export default function Index({auth, products, permissions}) {
                                                 </li>
                                             }
                                             {
-                                                product.user.id === auth.user.id &&
-                                                permissions['product-write'] &&
+                                                permissions['preset-write'] &&
                                                 <li>
-                                                    <a className="tooltip tooltip-top text-error" data-tip="Delete" onClick={() => router.delete(route('products.destroy', product.id))}>
+                                                    <a className="tooltip tooltip-top text-error" data-tip="Delete"
+                                                       onClick={() => router.delete(route('presets.destroy', preset.id))}>
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                              viewBox="0 0 24 24" strokeWidth="1.5"
                                                              stroke="currentColor" className="w-6 h-6">
                                                             <path strokeLinecap="round" strokeLinejoin="round"
                                                                   d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
                                                         </svg>
-
                                                     </a>
                                                 </li>
                                             }
@@ -119,14 +117,13 @@ export default function Index({auth, products, permissions}) {
                                                                 <path strokeLinecap="round" strokeLinejoin="round"
                                                                       d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                                                             </svg>
-
                                                         </a>
                                                     </li>
                                                     {
-                                                        product.user.id === auth.user.id &&
-                                                        permissions['product-write'] &&
+                                                        permissions['preset-write'] &&
                                                         <li>
-                                                            <a className="tooltip tooltip-right" data-tip="Edit" onClick={() => router.visit(route('products.edit', {id: product.id}))}>
+                                                            <a className="tooltip tooltip-right" data-tip="Edit"
+                                                               onClick={() => router.visit(route('presets.edit', {id: preset.id}))}>
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                      viewBox="0 0 24 24" strokeWidth="1.5"
                                                                      stroke="currentColor" className="w-6 h-6">
@@ -138,10 +135,10 @@ export default function Index({auth, products, permissions}) {
                                                         </li>
                                                     }
                                                     {
-                                                        product.user.id === auth.user.id &&
-                                                        permissions['product-write'] &&
+                                                        permissions['preset-write'] &&
                                                         <li>
-                                                            <a className="tooltip tooltip-right" data-tip="Delete" onClick={() => router.delete(route('products.destroy', product.id))}>
+                                                            <a className="tooltip tooltip-right" data-tip="Delete"
+                                                               onClick={() => router.delete(route('presets.destroy', preset.id))}>
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                      viewBox="0 0 24 24" strokeWidth="1.5"
                                                                      stroke="currentColor" className="w-6 h-6">
@@ -163,10 +160,10 @@ export default function Index({auth, products, permissions}) {
                     <div className="flex justify-center align-items">
                         <Pagination
                             className="mt-5"
-                            currentPage={products.current_page}
-                            prevPageUrl={products.prev_page_url}
-                            nextPageUrl={products.next_page_url}
-                            totalPages={products.last_page}
+                            currentPage={presets.current_page}
+                            prevPageUrl={presets.prev_page_url}
+                            nextPageUrl={presets.next_page_url}
+                            totalPages={presets.last_page}
                         />
                     </div>
                 </div>

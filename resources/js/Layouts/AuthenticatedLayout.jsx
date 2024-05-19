@@ -24,103 +24,18 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
         <div className="min-h-screen">
             <div className="navbar bg-primary">
                 <div className="navbar-start">
-                    <div className="dropdown">
-                        <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-                            <svg href="/" xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                      d="M4 6h16M4 12h8m-8 6h16"/>
-                            </svg>
-                        </div>
-                        <ul tabIndex={0}
-                            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                            <li>
-                                <a href={route('dashboard')}
-                                   className={route().current('dashboard') ? 'border border-neutral' : ''}>
-                                    Dashboard
-                                </a>
-                            </li>
-                            <li>
-                                <a href={route('chirps.index')}
-                                   className={route().current('chirps.index') ? 'border border-neutral' : ''}>
-                                    Chirps
-                                </a>
-                            </li>
-                            {
-                                permissions['product-list'] &&
-                                <li>
-                                    <a href={route('products.index')}
-                                       className={route().current('products.index') ? 'border border-neutral' : ''}>
-                                        Products
-                                    </a>
-                                </li>
-                            }
-                            {
-                                permissions['role-list'] &&
-                                <li>
-                                    <a href={route('roles.index')}
-                                       className={route().current('roles.index') ? 'border border-neutral' : ''}>
-                                        Roles
-                                    </a>
-                                </li>
-                            }
-                            {
-                                permissions['user-list'] &&
-                                <li>
-                                    <a href={route('users.index')}
-                                       className={route().current('users.index') ? 'border border-neutral' : ''}>
-                                        Users
-                                    </a>
-                                </li>
-                            }
-                        </ul>
-                    </div>
-                    <a className="btn btn-ghost text-xl" href="/">
+                    <a className="btn btn-ghost text-xl max-sm:hidden" href="/">
                         <ApplicationLogo className="block h-9 w-auto fill-current"/>
                     </a>
-                </div>
-                <div className="navbar-center hidden lg:flex">
-                    <ul className="menu menu-horizontal px-1">
-                        <li className="mr-1">
-                            <a href={route('dashboard')}
-                               className={route().current('dashboard') ? 'border border-neutral' : ''}>
-                                Dashboard
-                            </a>
-                        </li>
-                        <li className="mr-1">
-                            <a href={route('chirps.index')}
-                               className={route().current('chirps.index') ? 'border border-neutral' : ''}>
-                                Chirps
-                            </a>
-                        </li>
-                        {
-                            permissions['product-list'] &&
-                            <li className="mr-1">
-                                <a href={route('products.index')}
-                                   className={route().current('products.index') ? 'border border-neutral' : ''}>
-                                    Products
-                                </a>
-                            </li>
-                        }
-                        {
-                            permissions['role-list'] &&
-                            <li className="mr-1">
-                                <a href={route('roles.index')}
-                                   className={route().current('roles.index') ? 'border border-neutral' : ''}>
-                                    Roles
-                                </a>
-                            </li>
-                        }
-                        {
-                            permissions['user-list'] &&
-                            <li className="mr-1">
-                                <a href={route('users.index')}
-                                   className={route().current('users.index') ? 'border border-neutral' : ''}>
-                                    Users
-                                </a>
-                            </li>
-                        }
-                    </ul>
+                    <a className="btn btn-ghost text-sm lg:hidden">
+                        <label htmlFor="main-drawer" className="drawer-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                                 stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round"
+                                      d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5"/>
+                            </svg>
+                        </label>
+                    </a>
                 </div>
                 <div className="navbar-end">
                     <div className="dropdown dropdown-end">
@@ -150,12 +65,8 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                                 </label>
                             </li>
                             <li>
-                                <button type="button" className="justify-center" onClick={() => {
-                                    axios.post(route('logout')).then(() => {
-                                        Inertia.reload({
-                                            preserveState: false
-                                        });
-                                    })
+                                <button type="button" className="justify-center" onClick={async () => {
+                                    await axios.post(route('logout')).then(() => window.location.reload())
                                 }}>
                                     Logout
                                 </button>
@@ -164,14 +75,82 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                     </div>
                 </div>
             </div>
-
-            {header && (
-                <header className="artboard">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">{header}</div>
-                </header>
-            )}
-
-            <main>{children}</main>
+            <div className="drawer lg:drawer-open">
+                <input id="main-drawer" type="checkbox" className="drawer-toggle"/>
+                <div className="drawer-content">
+                    {header && (
+                        <header className="artboard">
+                            <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">{header}</div>
+                        </header>
+                    )}
+                    <main>{children}</main>
+                </div>
+                <div className="drawer-side">
+                    <label htmlFor="main-drawer" aria-label="close sidebar" className="drawer-overlay"></label>
+                    <ul className="menu p-4 lg:w-60 w-40 min-h-full bg-base-200 text-base-content">
+                        <li>
+                            <a href={route('dashboard')}
+                               className={route().current('dashboard') ? 'active' : ''}>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a href={route('chirps.index')}
+                               className={route().current('chirps.index') ? 'active' : ''}>
+                                Chirps
+                            </a>
+                        </li>
+                        {
+                            permissions['product-read'] &&
+                            <li>
+                                <a href={route('products.index')}
+                                   className={route().current('products.index') ? 'active' : ''}>
+                                    Products
+                                </a>
+                            </li>
+                        }
+                        {
+                            (permissions['role-read'] || permissions['user-read'] || permissions['preset-read']) &&
+                            <li>
+                                <details open>
+                                    <summary className="rounded-lg cursor-pointer">
+                                        Admin
+                                    </summary>
+                                    <ul>
+                                        {
+                                            permissions['role-read'] &&
+                                            <li>
+                                                <a href={route('roles.index')}
+                                                   className={route().current('roles.index') ? 'active' : ''}>
+                                                    Roles
+                                                </a>
+                                            </li>
+                                        }
+                                        {
+                                            permissions['user-read'] &&
+                                            <li>
+                                                <a href={route('users.index')}
+                                                   className={route().current('users.index') ? 'active' : ''}>
+                                                    Users
+                                                </a>
+                                            </li>
+                                        }
+                                        {
+                                            permissions['preset-read'] &&
+                                            <li>
+                                                <a href={route('presets.index')}
+                                                   className={route().current('presets.index') ? 'active' : ''}>
+                                                    Presets
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </details>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
         </div>
     );
 }

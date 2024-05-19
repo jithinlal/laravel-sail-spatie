@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\constants\Roles;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -15,8 +14,10 @@ class RoleController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('permission:role-list|role-create', only: ['index', 'store']),
-            new Middleware('permission:role-create', only: ['create', 'store', 'edit', 'update', 'destroy']),
+            new Middleware('permission:role-read|role-write', only: ['index', 'store']),
+            new Middleware('permission:role-write', only: ['create', 'store']),
+            new Middleware('permission:role-write', only: ['edit', 'update']),
+            new Middleware('permission:role-write', only: ['destroy']),
         ];
     }
 
@@ -25,10 +26,7 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function index(): \Inertia\Response
     {
-        $roles = Role::query()
-            ->where('name', '<>', Roles::ADMIN)
-            ->orderBy('id', 'DESC')
-            ->paginate(50);
+        $roles = Role::query()->orderBy('id', 'DESC')->paginate(10);
 
         return Inertia::render('Roles/Index', [
             'roles' => $roles,
