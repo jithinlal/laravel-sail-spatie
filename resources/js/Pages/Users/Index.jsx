@@ -63,7 +63,7 @@ export default function Index({auth, users, permissions}) {
                                             </a>
                                         </li>
                                         {
-                                            permissions['user-edit'] &&
+                                            permissions['user-create'] &&
                                             <li>
                                                 <a className="tooltip tooltip-top" data-tip="Edit"
                                                    onClick={() => router.visit(route('users.edit', {id: user.id}))}>
@@ -78,7 +78,7 @@ export default function Index({auth, users, permissions}) {
                                             </li>
                                         }
                                         {
-                                            permissions['user-delete'] &&
+                                            permissions['user-create'] &&
                                             <li>
                                                 <a className="tooltip tooltip-top text-error" data-tip="Delete"
                                                    onClick={() => router.delete(route('users.destroy', user.id))}>

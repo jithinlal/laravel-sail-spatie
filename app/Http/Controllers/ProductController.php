@@ -10,20 +10,18 @@ use Inertia\Inertia;
 
 class ProductController extends Controller implements HasMiddleware
 {
-    public static function middleware()
+    public static function middleware(): array
     {
         return [
-            new Middleware('permission:product-list|product-create|product-edit|product-delete', only: ['index', 'store']),
-            new Middleware('permission:product-create', only: ['create', 'store']),
-            new Middleware('permission:product-edit', only: ['edit', 'update']),
-            new Middleware('permission:product-delete', only: ['destroy']),
+            new Middleware('permission:product-list|product-create', only: ['index', 'store']),
+            new Middleware('permission:product-create', only: ['create', 'store', 'edit', 'update', 'destroy']),
         ];
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Inertia\Response
     {
         $products = Product::with('user:id,name')->latest()->paginate(50);
 
@@ -35,7 +33,7 @@ class ProductController extends Controller implements HasMiddleware
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): \Inertia\Response
     {
         return Inertia::render('Products/Create');
     }
@@ -66,7 +64,7 @@ class ProductController extends Controller implements HasMiddleware
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id): \Inertia\Response
     {
         $product = Product::with('user:id,name')->find($id);
 

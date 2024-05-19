@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\constants\Roles;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -21,14 +22,6 @@ class DatabaseSeeder extends Seeder
             'name' => 'role-create',
         ],
         [
-            'title' => 'Edit roles',
-            'name' => 'role-edit',
-        ],
-        [
-            'title' => 'Delete roles',
-            'name' => 'role-delete',
-        ],
-        [
             'title' => 'List products',
             'name' => 'product-list',
         ],
@@ -37,28 +30,12 @@ class DatabaseSeeder extends Seeder
             'name' => 'product-create',
         ],
         [
-            'title' => 'Edit products',
-            'name' => 'product-edit',
-        ],
-        [
-            'title' => 'Delete products',
-            'name' => 'product-delete',
-        ],
-        [
             'title' => 'List users',
             'name' => 'user-list',
         ],
         [
             'title' => 'Create users',
             'name' => 'user-create',
-        ],
-        [
-            'title' => 'Edit users',
-            'name' => 'user-edit',
-        ],
-        [
-            'title' => 'Delete users',
-            'name' => 'user-delete',
         ],
     ];
 
@@ -77,7 +54,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('Abc123#'),
         ]);
 
-        $adminRole = Role::create(['name' => 'Admin']);
+        $adminRole = Role::create(['name' => Roles::ADMIN]);
         $permissions = Permission::all()->pluck('id', 'id')->all();
         $adminRole->syncPermissions($permissions);
         $adminUser->assignRole([$adminRole->id]);
@@ -88,7 +65,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('Abc123#'),
         ]);
 
-        $normalRole = Role::create(['name' => 'Normal']);
+        $normalRole = Role::create(['name' => Roles::NORMAL]);
         $permission = Permission::query()->where(['name' => 'product-list', 'guard_name' => Guard::getDefaultName(Permission::class)])->get();
         $normalRole->syncPermissions($permission);
         $normalUser->assignRole([$normalRole->id]);
