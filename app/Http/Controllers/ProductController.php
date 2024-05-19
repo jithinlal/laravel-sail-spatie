@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class ProductController extends Controller implements HasMiddleware
 {
@@ -14,16 +15,14 @@ class ProductController extends Controller implements HasMiddleware
     {
         return [
             new Middleware('permission:product-read|product-write', only: ['index', 'store']),
-            new Middleware('permission:product-write', only: ['create', 'store']),
-            new Middleware('permission:product-write', only: ['edit', 'update']),
-            new Middleware('permission:product-write', only: ['destroy']),
+            new Middleware('permission:product-write', only: ['create', 'store', 'edit', 'update', 'destroy']),
         ];
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index(): \Inertia\Response
+    public function index(): Response
     {
         $products = Product::with('user:id,name')->latest()->paginate(10);
 
@@ -35,7 +34,7 @@ class ProductController extends Controller implements HasMiddleware
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): \Inertia\Response
+    public function create(): Response
     {
         return Inertia::render('Products/Create');
     }
@@ -66,7 +65,7 @@ class ProductController extends Controller implements HasMiddleware
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id): \Inertia\Response
+    public function edit(string $id): Response
     {
         $product = Product::with('user:id,name')->find($id);
 

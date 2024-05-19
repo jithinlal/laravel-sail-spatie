@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\constants\Roles;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
+use Inertia\Response;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -15,18 +17,19 @@ class RoleController extends Controller implements HasMiddleware
     {
         return [
             new Middleware('permission:role-read|role-write', only: ['index', 'store']),
-            new Middleware('permission:role-write', only: ['create', 'store']),
-            new Middleware('permission:role-write', only: ['edit', 'update']),
-            new Middleware('permission:role-write', only: ['destroy']),
+            new Middleware('permission:role-write', only: ['create', 'store', 'edit', 'update', 'destroy']),
         ];
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index(): \Inertia\Response
+    public function index(): Response
     {
-        $roles = Role::query()->orderBy('id', 'DESC')->paginate(10);
+        $roles = Role::query()
+            ->where('name', '<>', Roles::ADMIN)
+            ->orderBy('id', 'DESC')
+            ->paginate(50);
 
         return Inertia::render('Roles/Index', [
             'roles' => $roles,
@@ -36,7 +39,7 @@ class RoleController extends Controller implements HasMiddleware
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): \Inertia\Response
+    public function create(): Response
     {
         $permissions = Permission::all();
 
@@ -81,7 +84,7 @@ class RoleController extends Controller implements HasMiddleware
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id): \Inertia\Response
+    public function edit(string $id): Response
     {
         $role = Role::findById($id);
 

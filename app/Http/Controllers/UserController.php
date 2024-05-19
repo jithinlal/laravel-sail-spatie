@@ -12,24 +12,23 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Inertia\Response;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller implements HasMiddleware
 {
-    public static function middleware()
+    public static function middleware(): array
     {
         return [
             new Middleware('permission:user-read|user-write', only: ['index', 'store']),
-            new Middleware('permission:user-write', only: ['create', 'store']),
-            new Middleware('permission:user-write', only: ['edit', 'update']),
-            new Middleware('permission:user-write', only: ['destroy']),
+            new Middleware('permission:user-write', only: ['create', 'store', 'edit', 'update', 'destroy']),
         ];
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
         $users = User::orderBy('created_at', 'desc')->paginate(10);
 
@@ -41,7 +40,7 @@ class UserController extends Controller implements HasMiddleware
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
         $roles = Role::all();
 
@@ -98,7 +97,7 @@ class UserController extends Controller implements HasMiddleware
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id): Response
     {
         $roles = Role::all();
 

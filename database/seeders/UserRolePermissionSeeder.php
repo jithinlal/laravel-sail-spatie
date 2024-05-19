@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\constants\Roles;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Guard;
@@ -61,7 +62,7 @@ class UserRolePermissionSeeder extends Seeder
             'password' => Hash::make('Abc123#'),
         ]);
 
-        $adminRole = Role::create(['name' => 'Admin']);
+        $adminRole = Role::create(['name' => Roles::ADMIN]);
         $permissions = Permission::all()->pluck('id', 'id')->all();
         $adminRole->syncPermissions($permissions);
         $adminUser->assignRole([$adminRole->id]);
@@ -72,7 +73,7 @@ class UserRolePermissionSeeder extends Seeder
             'password' => Hash::make('Abc123#'),
         ]);
 
-        $normalRole = Role::create(['name' => 'Normal']);
+        $normalRole = Role::create(['name' => Roles::NORMAL]);
         $permission = Permission::query()->where(['name' => 'product-read', 'guard_name' => Guard::getDefaultName(Permission::class)])->get();
         $normalRole->syncPermissions($permission);
         $normalUser->assignRole([$normalRole->id]);

@@ -7,24 +7,23 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
+use Inertia\Response;
 use function Termwind\render;
 
 class PresetController extends Controller implements HasMiddleware
 {
-    public static function middleware()
+    public static function middleware(): array
     {
         return [
             new Middleware('permission:preset-read|preset-write', only: ['index', 'store']),
-            new Middleware('permission:preset-write', only: ['create', 'store']),
-            new Middleware('permission:preset-write', only: ['edit', 'update']),
-            new Middleware('permission:preset-write', only: ['destroy']),
+            new Middleware('permission:preset-write', only: ['create', 'store', 'edit', 'update', 'destroy']),
         ];
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
         $presets = Preset::orderBy('created_at', 'desc')->paginate(10);
 
@@ -36,7 +35,7 @@ class PresetController extends Controller implements HasMiddleware
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('Presets/Create');
     }
@@ -67,7 +66,7 @@ class PresetController extends Controller implements HasMiddleware
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id): Response
     {
         $preset = Preset::find($id);
 
