@@ -17,7 +17,7 @@ export default function Index({auth, users, permissions}) {
                         </h1>
                     </div>
                     {
-                        permissions['user-create'] &&
+                        permissions['user-write'] &&
                         <PrimaryButton onClick={() => router.visit(route('users.create'))}>
                             Create user
                         </PrimaryButton>

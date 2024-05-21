@@ -6,6 +6,7 @@ use App\constants\Roles;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Models\Permission;
@@ -26,8 +27,12 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function index(): Response
     {
+        $userId = Auth::id();
+
         $roles = Role::query()
             ->where('name', '<>', Roles::ADMIN)
+            ->where('created_by', '=', null)
+            ->orWhere('created_by', '=', $userId)
             ->orderBy('id', 'DESC')
             ->paginate(50);
 
@@ -63,6 +68,7 @@ class RoleController extends Controller implements HasMiddleware
 
         $role->name = $request->name;
         $role->guard_name = 'web';
+        $role->created_by = $request->user()->id;
 
         $role->save();
 
