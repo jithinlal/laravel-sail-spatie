@@ -9,6 +9,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -135,6 +136,8 @@ class UserController extends Controller implements HasMiddleware
             'roles.*' => 'int',
         ]);
 
+        Gate::authorize('update', $id);
+
         DB::transaction(function () use ($request, $id) {
             $roles = Role::find([$request->roles]);
 
@@ -162,6 +165,8 @@ class UserController extends Controller implements HasMiddleware
      */
     public function destroy(User $user)
     {
+        Gate::authorize('delete', $user);
+
         $user->delete();
 
         return redirect(route('users.index'));
