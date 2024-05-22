@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -30,7 +31,12 @@ class UserController extends Controller implements HasMiddleware
      */
     public function index(): Response
     {
-        $users = User::orderBy('created_at', 'desc')->paginate(10);
+        $userId = Auth::id();
+
+        $users = User::orderBy('created_at', 'desc')
+            ->where('id', '<>', $userId)
+            ->where('created_by', '=', $userId)
+            ->paginate(10);
 
         return Inertia::render('Users/Index', [
             'users' => $users,
@@ -70,6 +76,7 @@ class UserController extends Controller implements HasMiddleware
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'password' => Hash::make($password),
+                'created_by' => $request->user()->id,
             ]);
 
             $assignedRoles = [];

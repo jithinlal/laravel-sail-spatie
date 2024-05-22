@@ -71,6 +71,7 @@ class UserRolePermissionSeeder extends Seeder
             'name' => 'Kevin',
             'email' => 'kevin@gmail.com',
             'password' => Hash::make('Abc123#'),
+            'created_by' => $adminUser->id,
         ]);
 
         $normalRole = Role::create(['name' => Roles::NORMAL]);

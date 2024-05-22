@@ -3,8 +3,11 @@ import {Head} from "@inertiajs/react";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {router} from '@inertiajs/core'
 import Pagination from "@/Components/Pagination.jsx";
+import {useState} from "react";
 
 export default function Index({auth, users, permissions}) {
+    const [deleteUserId, setDeleteUserId] = useState(0)
+
     return (
         <AuthenticatedLayout user={auth.user} permissions={permissions}>
             <Head title="Roles"/>
@@ -40,7 +43,7 @@ export default function Index({auth, users, permissions}) {
                         </tr>
                         </thead>
                         <tbody className="bg-primary">
-                        {users.data.map((user, index) => user.id !== auth.user.id && (
+                        {users.data.map((user, index) => (
                             <tr key={index}>
                                 <td>
                                     {user.name}
@@ -83,7 +86,10 @@ export default function Index({auth, users, permissions}) {
                                                 permissions['user-write'] &&
                                                 <li>
                                                     <a className="tooltip tooltip-top text-error" data-tip="Delete"
-                                                       onClick={() => router.delete(route('users.destroy', user.id))}>
+                                                       onClick={() => {
+                                                           setDeleteUserId(user.id)
+                                                           document.getElementById('user-delete-confirm').showModal()
+                                                       }}>
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                              viewBox="0 0 24 24" strokeWidth="1.5"
                                                              stroke="currentColor" className="w-6 h-6">
@@ -138,7 +144,10 @@ export default function Index({auth, users, permissions}) {
                                                         permissions['user-write'] &&
                                                         <li>
                                                             <a className="tooltip tooltip-right" data-tip="Delete"
-                                                               onClick={() => router.delete(route('users.destroy', user.id))}>
+                                                               onClick={() => {
+                                                                   setDeleteUserId(user.id)
+                                                                   document.getElementById('user-delete-confirm').showModal()
+                                                               }}>
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                      viewBox="0 0 24 24" strokeWidth="1.5"
                                                                      stroke="currentColor" className="w-6 h-6">
@@ -157,6 +166,21 @@ export default function Index({auth, users, permissions}) {
                         ))}
                         </tbody>
                     </table>
+                    <dialog id="user-delete-confirm" className="modal modal-bottom sm:modal-middle">
+                        <div className="modal-box">
+                            <p className="py-4">Are you sure you want to delete?</p>
+                            <div className="modal-action">
+                                <form method="dialog">
+                                    <button className="btn btn-secondary">
+                                        Cancel
+                                    </button>
+                                    <button className="btn btn-error ml-2" onClick={() => router.delete(route('users.destroy', deleteUserId))}>
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </dialog>
                     <div className="flex justify-center align-items">
                         <Pagination
                             className="mt-5"
