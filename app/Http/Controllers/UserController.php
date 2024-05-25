@@ -136,12 +136,12 @@ class UserController extends Controller implements HasMiddleware
             'roles.*' => 'int',
         ]);
 
-        Gate::authorize('update', $id);
+        $user = User::find($id);
 
-        DB::transaction(function () use ($request, $id) {
+        Gate::authorize('update', $user);
+
+        DB::transaction(function () use ($user, $request) {
             $roles = Role::find([$request->roles]);
-
-            $user = User::find($id);
 
             $user->name = $request->name;
             $user->email = $request->email;

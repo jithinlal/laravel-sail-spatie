@@ -4,6 +4,7 @@ import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {router} from '@inertiajs/core'
 import Pagination from "@/Components/Pagination.jsx";
 import {useState} from "react";
+import Dialog from "@/Components/Dialog.jsx";
 
 export default function Index({auth, users, permissions}) {
     const [deleteUserId, setDeleteUserId] = useState(0)
@@ -166,21 +167,7 @@ export default function Index({auth, users, permissions}) {
                         ))}
                         </tbody>
                     </table>
-                    <dialog id="user-delete-confirm" className="modal modal-bottom sm:modal-middle">
-                        <div className="modal-box">
-                            <p className="py-4">Are you sure you want to delete?</p>
-                            <div className="modal-action">
-                                <form method="dialog">
-                                    <button className="btn btn-secondary">
-                                        Cancel
-                                    </button>
-                                    <button className="btn btn-error ml-2" onClick={() => router.delete(route('users.destroy', deleteUserId))}>
-                                        Delete
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </dialog>
+                    <Dialog id={deleteUserId} modelId="user-delete-confirm" routePath="users.destroy"/>
                     <div className="flex justify-center align-items">
                         <Pagination
                             className="mt-5"

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Models\Permission;
@@ -126,6 +127,8 @@ class RoleController extends Controller implements HasMiddleware
 
         $role = Role::findById($id);
 
+        Gate::authorize('update', $role);
+
         $role->name = $request->name;
 
         $role->save();
@@ -142,6 +145,8 @@ class RoleController extends Controller implements HasMiddleware
      */
     public function destroy(Role $role)
     {
+        Gate::authorize('delete', $role);
+
         $role->delete();
 
         return redirect(route('roles.index'));
