@@ -69,7 +69,7 @@ export default function Index({auth, users, permissions}) {
                                                 </a>
                                             </li>
                                             {
-                                                permissions['user-write'] &&
+                                                permissions['user-write'] && user.created_by === auth.user.id &&
                                                 <li>
                                                     <a className="tooltip tooltip-top" data-tip="Edit"
                                                        onClick={() => router.visit(route('users.edit', {id: user.id}))}>
@@ -84,7 +84,7 @@ export default function Index({auth, users, permissions}) {
                                                 </li>
                                             }
                                             {
-                                                permissions['user-write'] &&
+                                                permissions['user-write'] && user.created_by === auth.user.id &&
                                                 <li>
                                                     <a className="tooltip tooltip-top text-error" data-tip="Delete"
                                                        onClick={() => {
@@ -127,7 +127,7 @@ export default function Index({auth, users, permissions}) {
                                                         </a>
                                                     </li>
                                                     {
-                                                        permissions['user-write'] &&
+                                                        permissions['user-write'] && user.created_by === auth.user.id &&
                                                         <li>
                                                             <a className="tooltip tooltip-right" data-tip="Edit"
                                                                onClick={() => router.visit(route('users.edit', {id: user.id}))}>
@@ -142,7 +142,7 @@ export default function Index({auth, users, permissions}) {
                                                         </li>
                                                     }
                                                     {
-                                                        permissions['user-write'] &&
+                                                        permissions['user-write'] && user.created_by === auth.user.id &&
                                                         <li>
                                                             <a className="tooltip tooltip-right" data-tip="Delete"
                                                                onClick={() => {

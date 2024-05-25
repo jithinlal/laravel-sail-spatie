@@ -6,9 +6,9 @@ use App\Models\Preset;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
-use function Termwind\render;
 
 class PresetController extends Controller implements HasMiddleware
 {
@@ -50,7 +50,13 @@ class PresetController extends Controller implements HasMiddleware
             'detail' => 'required|string|max:255',
         ]);
 
-        $preset = Preset::create($validated);
+        $preset = new Preset;
+
+        $preset->name = $request->name;
+        $preset->detail = $request->detail;
+        $preset->created_by = $request->user()->id;
+
+        $preset->save();
 
         return redirect(route('presets.index'));
     }
@@ -85,6 +91,8 @@ class PresetController extends Controller implements HasMiddleware
             'detail' => 'required|string|max:255',
         ]);
 
+        Gate::authorize('update', $preset);
+
         $preset->update($validated);
 
         return redirect(route('presets.index'));
@@ -95,6 +103,8 @@ class PresetController extends Controller implements HasMiddleware
      */
     public function destroy(Preset $preset)
     {
+        Gate::authorize('delete', $preset);
+
         $preset->delete();
 
         return redirect(route('presets.index'));

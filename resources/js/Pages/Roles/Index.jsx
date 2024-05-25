@@ -62,7 +62,7 @@ export default function Index({auth, roles, permissions}) {
                                                 </a>
                                             </li>
                                             {
-                                                permissions['role-write'] &&
+                                                permissions['role-write'] && role.created_by === auth.user.id &&
                                                 <li>
                                                     <a className="tooltip tooltip-top" data-tip="Edit"
                                                        onClick={() => router.visit(route('roles.edit', {id: role.id}))}>
@@ -77,7 +77,7 @@ export default function Index({auth, roles, permissions}) {
                                                 </li>
                                             }
                                             {
-                                                permissions['role-write'] &&
+                                                permissions['role-write'] && role.created_by === auth.user.id &&
                                                 <li>
                                                     <a className="tooltip tooltip-top text-error" data-tip="Delete"
                                                        onClick={() => {
@@ -120,7 +120,7 @@ export default function Index({auth, roles, permissions}) {
                                                         </a>
                                                     </li>
                                                     {
-                                                        permissions['role-write'] &&
+                                                        permissions['role-write'] && role.created_by === auth.user.id &&
                                                         <li>
                                                             <a className="tooltip tooltip-right" data-tip="Edit"
                                                                onClick={() => router.visit(route('roles.edit', {id: role.id}))}>
@@ -135,10 +135,13 @@ export default function Index({auth, roles, permissions}) {
                                                         </li>
                                                     }
                                                     {
-                                                        permissions['role-write'] &&
+                                                        permissions['role-write'] && role.created_by === auth.user.id &&
                                                         <li>
                                                             <a className="tooltip tooltip-right" data-tip="Delete"
-                                                               onClick={() => router.delete(route('roles.destroy', role.id))}>
+                                                               onClick={() => {
+                                                                   setDeleteRoleId(role.id);
+                                                                   document.getElementById('role-delete-confirm').showModal()
+                                                               }}>
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                      viewBox="0 0 24 24" strokeWidth="1.5"
                                                                      stroke="currentColor" className="w-6 h-6">

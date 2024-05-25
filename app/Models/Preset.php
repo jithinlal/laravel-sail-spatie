@@ -11,6 +11,6 @@ class Preset extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name', 'detail'
+        'name', 'detail', 'created_by',
     ];
 }

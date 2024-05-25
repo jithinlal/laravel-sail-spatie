@@ -4,8 +4,12 @@ import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {router} from '@inertiajs/core'
 import TooltipText from "@/Components/TooltipText.jsx";
 import Pagination from "@/Components/Pagination.jsx";
+import { useState } from "react";
+import Dialog from "@/Components/Dialog.jsx";
 
 export default function Index({auth, presets, permissions}) {
+    const [deletePresetId, setDeletePresetId] = useState(0)
+
     return (
         <AuthenticatedLayout user={auth.user} permissions={permissions}>
             <Head title="Presets"/>
@@ -65,7 +69,7 @@ export default function Index({auth, presets, permissions}) {
                                                 </a>
                                             </li>
                                             {
-                                                permissions['preset-write'] &&
+                                                permissions['preset-write'] && preset.created_by === auth.user.id &&
                                                 <li>
                                                     <a className="tooltip tooltip-top" data-tip="Edit"
                                                        onClick={() => router.visit(route('presets.edit', {id: preset.id}))}>
@@ -80,10 +84,13 @@ export default function Index({auth, presets, permissions}) {
                                                 </li>
                                             }
                                             {
-                                                permissions['preset-write'] &&
+                                                permissions['preset-write'] && preset.created_by === auth.user.id &&
                                                 <li>
                                                     <a className="tooltip tooltip-top text-error" data-tip="Delete"
-                                                       onClick={() => router.delete(route('presets.destroy', preset.id))}>
+                                                       onClick={() => {
+                                                           setDeletePresetId(preset.id);
+                                                           document.getElementById('preset-delete-confirm').showModal()
+                                                       }}>
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                              viewBox="0 0 24 24" strokeWidth="1.5"
                                                              stroke="currentColor" className="w-6 h-6">
@@ -120,7 +127,7 @@ export default function Index({auth, presets, permissions}) {
                                                         </a>
                                                     </li>
                                                     {
-                                                        permissions['preset-write'] &&
+                                                        permissions['preset-write'] && preset.created_by === auth.user.id &&
                                                         <li>
                                                             <a className="tooltip tooltip-right" data-tip="Edit"
                                                                onClick={() => router.visit(route('presets.edit', {id: preset.id}))}>
@@ -135,10 +142,13 @@ export default function Index({auth, presets, permissions}) {
                                                         </li>
                                                     }
                                                     {
-                                                        permissions['preset-write'] &&
+                                                        permissions['preset-write'] && preset.created_by === auth.user.id &&
                                                         <li>
                                                             <a className="tooltip tooltip-right" data-tip="Delete"
-                                                               onClick={() => router.delete(route('presets.destroy', preset.id))}>
+                                                               onClick={() => {
+                                                                   setDeletePresetId(preset.id);
+                                                                   document.getElementById('preset-delete-confirm').showModal()
+                                                               }}>
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                      viewBox="0 0 24 24" strokeWidth="1.5"
                                                                      stroke="currentColor" className="w-6 h-6">
@@ -157,6 +167,7 @@ export default function Index({auth, presets, permissions}) {
                         ))}
                         </tbody>
                     </table>
+                    <Dialog id={deletePresetId} modelId="preset-delete-confirm" routePath="presets.destroy"/>
                     <div className="flex justify-center align-items">
                         <Pagination
                             className="mt-5"
