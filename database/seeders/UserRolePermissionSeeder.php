@@ -37,6 +37,14 @@ class UserRolePermissionSeeder extends Seeder
             'title' => 'Create preset',
             'name' => 'preset-write',
         ],
+        [
+            'title' => 'Get project',
+            'name' => 'project-read',
+        ],
+        [
+            'title' => 'Create project',
+            'name' => 'project-write',
+        ],
     ];
 
     /**

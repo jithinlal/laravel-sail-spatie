@@ -95,6 +95,15 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                             </a>
                         </li>
                         {
+                            permissions['project-read'] &&
+                            <li>
+                                <a href={route('projects.index')}
+                                    className={route().current('projects.index') ? 'active' : ''}>
+                                    Projects
+                                </a>
+                            </li>
+                        }
+                        {
                             (permissions['role-read'] || permissions['user-read'] || permissions['preset-read']) &&
                             <li>
                                 <details open>
