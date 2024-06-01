@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\PresetController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleController;
@@ -31,13 +29,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
-    Route::resource('products', ProductController::class);
     Route::resource('presets', PresetController::class);
     Route::resource('projects', ProjectController::class);
 });
-
-Route::resource('chirps', ChirpController::class)
-    ->only(['index', 'store', 'update', 'destroy'])
-    ->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';

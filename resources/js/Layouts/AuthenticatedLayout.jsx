@@ -94,21 +94,6 @@ export default function AuthenticatedLayout({ user, permissions, header, childre
                                 Dashboard
                             </a>
                         </li>
-                        <li>
-                            <a href={route('chirps.index')}
-                               className={route().current('chirps.index') ? 'active' : ''}>
-                                Chirps
-                            </a>
-                        </li>
-                        {
-                            permissions['product-read'] &&
-                            <li>
-                                <a href={route('products.index')}
-                                   className={route().current('products.index') ? 'active' : ''}>
-                                    Products
-                                </a>
-                            </li>
-                        }
                         {
                             (permissions['role-read'] || permissions['user-read'] || permissions['preset-read']) &&
                             <li>

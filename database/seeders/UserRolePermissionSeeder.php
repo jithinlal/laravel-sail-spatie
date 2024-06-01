@@ -22,14 +22,6 @@ class UserRolePermissionSeeder extends Seeder
             'name' => 'role-write',
         ],
         [
-            'title' => 'Get product',
-            'name' => 'product-read',
-        ],
-        [
-            'title' => 'Create product',
-            'name' => 'product-write',
-        ],
-        [
             'title' => 'Get user',
             'name' => 'user-read',
         ],
@@ -75,7 +67,7 @@ class UserRolePermissionSeeder extends Seeder
         ]);
 
         $normalRole = Role::create(['name' => Roles::NORMAL]);
-        $permission = Permission::query()->where(['name' => 'product-read', 'guard_name' => Guard::getDefaultName(Permission::class)])->get();
+        $permission = Permission::query()->where(['name' => 'preset-read', 'guard_name' => Guard::getDefaultName(Permission::class)])->get();
         $normalRole->syncPermissions($permission);
         $normalUser->assignRole([$normalRole->id]);
     }

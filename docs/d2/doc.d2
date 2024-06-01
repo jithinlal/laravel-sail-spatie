@@ -1,1 +1,32 @@
-x -> y : Hello world
+user: user
+project: project
+role: role
+preset: preset
+
+user -> project: using preset {
+    source-arrowhead: 1
+    target-arrowhead: * {
+        shape: diamond
+    }
+}
+
+user -> role: creates {
+    source-arrowhead: 1
+    target-arrowhead: * {
+        shape: diamond
+    }
+}
+
+user -> user: creates {
+    source-arrowhead: 1
+    target-arrowhead: * {
+        shape: diamond
+    }
+}
+
+user -> preset: creates {
+    source-arrowhead: 1
+    target-arrowhead: * {
+        shape: diamond
+    }
+}
