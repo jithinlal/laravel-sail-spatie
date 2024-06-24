@@ -14,7 +14,13 @@ class CategoryController extends Controller
      */
     public function index(): Response
     {
-        $categories = Category::all();
+        $userId = auth()->id();
+
+        $categories = Category::query()
+            ->where('created_by', '=', null)
+            ->orWhere('created_by', '=', $userId)
+            ->orderBy('name', 'ASC')
+            ->get();
 
         return Inertia::render('Category/Index', [
             'categories' => $categories,
