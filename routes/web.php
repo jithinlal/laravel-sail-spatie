@@ -1,12 +1,9 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\PresetController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,11 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('roles', RoleController::class);
-    Route::resource('users', UserController::class);
-    Route::resource('presets', PresetController::class);
-    Route::resource('projects', ProjectController::class);
     Route::resource('categories', CategoryController::class);
+    Route::resource('accounts', AccountController::class);
+    Route::resource('transactions', TransactionController::class);
 });
 
 require __DIR__.'/auth.php';

@@ -11,22 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('detail');
+            $table->text('icon')->nullable();
+            $table->string('color')->nullable();
+            $table->bigInteger('type_id')->nullable();
             $table->bigInteger('created_by')->nullable();
-            $table->bigInteger('preset_id');
             $table->foreign('created_by')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
-            $table->foreign('preset_id')
+            $table->foreign('type_id')
                 ->references('id')
-                ->on('presets')
+                ->on('types')
                 ->onDelete('cascade');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('categories');
     }
 };

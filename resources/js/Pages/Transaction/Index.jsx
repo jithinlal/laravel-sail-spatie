@@ -7,15 +7,15 @@ export default function Index({auth}) {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h1 className="font-semibold text-xl leading-tight">Category</h1>}
+            header={<h1 className="font-semibold text-xl leading-tight">Transaction</h1>}
         >
-            <Head title="Category" />
+            <Head title="Transaction" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-primary overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6">
-                            <h5>Here are your categories!</h5>
+                            <h5>Here are your transactions!</h5>
                         </div>
                     </div>
                 </div>

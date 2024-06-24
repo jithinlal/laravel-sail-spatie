@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Transaction;
+use App\Models\Account;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
-class TransactionController extends Controller
+class AccountController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
         $user = auth()->user();
-        $transactions = $user->transactions();
+        $accounts = $user->accounts();
 
-        return Inertia::render('Transaction/Index', [
-            'transactions' => $transactions,
+        return Inertia::render('Account/Index', [
+            'accounts' => $accounts,
         ]);
     }
 
@@ -40,7 +41,7 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Transaction $transaction)
+    public function show(Account $account)
     {
         //
     }
@@ -48,7 +49,7 @@ class TransactionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Transaction $transaction)
+    public function edit(Account $account)
     {
         //
     }
@@ -56,7 +57,7 @@ class TransactionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Transaction $transaction)
+    public function update(Request $request, Account $account)
     {
         //
     }
@@ -64,7 +65,7 @@ class TransactionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Transaction $transaction)
+    public function destroy(Account $account)
     {
         //
     }

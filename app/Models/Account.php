@@ -7,26 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Category extends Model
+class Account extends Model
 {
     use HasFactory;
 
     public $fillable = [
         'name',
-        'icon',
-        'color',
-        'type_id',
+        'balance',
+        'currency',
         'created_by',
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function type(): BelongsTo
-    {
-        return $this->belongsTo(Type::class);
     }
 
     public function transactions(): HasMany

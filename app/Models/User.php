@@ -8,11 +8,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory, HasRoles, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +22,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'created_by',
     ];
 
     /**
@@ -49,13 +47,18 @@ class User extends Authenticatable
         ];
     }
 
-    public function chirps(): HasMany
+    public function accounts(): HasMany
     {
-        return $this->hasMany(Chirp::class);
+        return $this->hasMany(Account::class);
     }
 
-    public function products(): HasMany
+    public function categories(): HasMany
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Category::class);
+    }
+
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
     }
 }
