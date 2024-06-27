@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Type;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,13 +18,26 @@ class CategoryController extends Controller
         $userId = auth()->id();
 
         $categories = Category::query()
+            ->whereIn('type_id', [Type::INCOME, Type::EXPENSE])
             ->where('created_by', '=', null)
             ->orWhere('created_by', '=', $userId)
             ->orderBy('name', 'ASC')
             ->get();
 
+        $incomeCategories = [];
+        $expenseCategories = [];
+
+        foreach ($categories as $category) {
+            if ($category->type_id == Type::INCOME->value) {
+                $incomeCategories[] = $category;
+            } elseif ($category->type_id == Type::EXPENSE->value) {
+                $expenseCategories[] = $category;
+            }
+        }
+
         return Inertia::render('Category/Index', [
-            'categories' => $categories,
+            'incomeCategories' => $incomeCategories,
+            'expenseCategories' => $expenseCategories,
         ]);
     }
 

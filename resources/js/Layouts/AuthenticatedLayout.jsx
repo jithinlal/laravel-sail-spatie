@@ -2,7 +2,7 @@ import {useState, useEffect} from "react";
 import axios from 'axios';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 
-export default function AuthenticatedLayout({ user, header, children }) {
+export default function AuthenticatedLayout({user, header, children}) {
     const [theme, setTheme] = useState(localStorage.getItem("theme") ?? "lighter");
 
     const handleToggle = (e) => {
@@ -42,7 +42,7 @@ export default function AuthenticatedLayout({ user, header, children }) {
                             Profile
                         </div>
                         <ul tabIndex={0}
-                            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow rounded-box w-52 bg-primary border border-secondary">
+                            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow rounded-md w-52 bg-primary">
                             <li>
                                 <a className="justify-center" href={route('profile.edit')}>
                                     {user.name}

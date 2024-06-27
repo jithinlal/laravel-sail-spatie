@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\constants\Roles;
+use App\Constants\Roles;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
