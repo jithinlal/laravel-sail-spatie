@@ -40,6 +40,6 @@ export default function Index({auth, incomeCategories, expenseCategories}) {
                     </div>
                 </div>
             </div>
-</AuthenticatedLayout>
-)
+        </AuthenticatedLayout>
+    )
 }

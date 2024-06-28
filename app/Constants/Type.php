@@ -6,4 +6,5 @@ enum Type: int
 {
     case INCOME = 1;
     case EXPENSE = 2;
+    case TRANSFER = 3;
 }

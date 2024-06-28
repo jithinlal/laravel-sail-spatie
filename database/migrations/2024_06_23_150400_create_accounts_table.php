@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('type');
             $table->bigInteger('balance');
             $table->string('currency');
-            $table->bigInteger('created_by');
+            $table->bigInteger('created_by')->nullable();
             $table->foreign('created_by')
                 ->references('id')
                 ->on('users')
