@@ -1,18 +1,4 @@
-<?php
-
-namespace Database\Seeders;
-
-use App\Models\Currency;
-use Illuminate\Database\Seeder;
-
-class CurrencySeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
-        $json = '{
     "data": {
         "EUR": {
             "symbol": "€",
@@ -344,18 +330,5 @@ class CurrencySeeder extends Seeder
             "name_plural": "South African rand",
             "type": "fiat"
         }
-    }
-}
-';
-
-            $data = json_decode($json);
-
-            foreach ($data->data as $currencyCode => $currencyData) {
-                Currency::create([
-                    'code' => $currencyData->code,
-                    'name' => $currencyData->name,
-                ]);
-            }
-
     }
 }
