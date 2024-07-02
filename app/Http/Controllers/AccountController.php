@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\BankType;
 use App\Models\Account;
+use App\Models\Currency;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -16,9 +18,13 @@ class AccountController extends Controller
     {
         $user = auth()->user();
         $accounts = $user->accounts();
+        $bankTypes = BankType::values();
+        $currencies = Currency::all(['id', 'name', 'code']);
 
         return Inertia::render('Account/Index', [
             'accounts' => $accounts,
+            'bankTypes' => $bankTypes,
+            'currencies' => $currencies,
         ]);
     }
 

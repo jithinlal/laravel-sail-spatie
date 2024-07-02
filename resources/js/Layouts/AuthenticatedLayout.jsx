@@ -2,7 +2,7 @@ import {useState, useEffect} from "react";
 import axios from 'axios';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 
-export default function AuthenticatedLayout({user, header, children}) {
+export default function AuthenticatedLayout({user, header, children, sideHeader}) {
     const [theme, setTheme] = useState(localStorage.getItem("theme") ?? "lighter");
 
     const handleToggle = (e) => {
@@ -79,7 +79,16 @@ export default function AuthenticatedLayout({user, header, children}) {
                 <div className="drawer-content">
                     {header && (
                         <header className="artboard">
-                            <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">{header}</div>
+                            <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between">
+                                <div>
+                                    {header}
+                                </div>
+                                {sideHeader && (
+                                    <div>
+                                        {sideHeader}
+                                    </div>
+                                )}
+                            </div>
                         </header>
                     )}
                     <main>{children}</main>

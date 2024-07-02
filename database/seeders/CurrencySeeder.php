@@ -348,14 +348,13 @@ class CurrencySeeder extends Seeder
 }
 ';
 
-            $data = json_decode($json);
+        $data = json_decode($json);
 
-            foreach ($data->data as $currencyCode => $currencyData) {
-                Currency::create([
-                    'code' => $currencyData->code,
-                    'name' => $currencyData->name,
-                ]);
-            }
-
+        foreach ($data->data as $currencyCode => $currencyData) {
+            Currency::create([
+                'code' => $currencyData->code,
+                'name' => $currencyData->name,
+            ]);
+        }
     }
 }
