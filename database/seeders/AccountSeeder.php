@@ -17,7 +17,7 @@ class AccountSeeder extends Seeder
             'name' => 'Bank',
             'type' => BankType::BANK->value,
             'balance' => 0,
-            'currency' => 1,
+            'currency_id' => 1,
         ]);
     }
 }

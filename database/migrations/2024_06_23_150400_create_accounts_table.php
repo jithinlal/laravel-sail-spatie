@@ -16,11 +16,15 @@ return new class extends Migration
             $table->string('name');
             $table->string('type');
             $table->bigInteger('balance');
-            $table->string('currency');
+            $table->bigInteger('currency_id');
             $table->bigInteger('created_by')->nullable();
             $table->foreign('created_by')
                 ->references('id')
                 ->on('users')
+                ->onDelete('cascade');
+            $table->foreign('currency_id')
+                ->references('id')
+                ->on('currencies')
                 ->onDelete('cascade');
             $table->timestamps();
         });

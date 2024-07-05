@@ -13,14 +13,15 @@ class Account extends Model
 
     public $fillable = [
         'name',
+        'type',
         'balance',
-        'currency',
+        'currency_id',
         'created_by',
     ];
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function transactions(): HasMany

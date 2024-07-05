@@ -17,7 +17,7 @@ class AccountController extends Controller
     public function index(): Response
     {
         $user = auth()->user();
-        $accounts = $user->accounts();
+        $accounts = $user->accounts()->get();
         $bankTypes = BankType::values();
         $currencies = Currency::all(['id', 'name', 'code']);
 
@@ -41,7 +41,23 @@ class AccountController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:20',
+            'bankType' => 'required|numeric|min:1',
+            'balance' => 'required|numeric|min:1',
+            'currency' => 'required|numeric|min:1',
+        ]);
+        $account = new Account;
+
+        $account->name = $request->name;
+        $account->type = $request->bankType;
+        $account->balance = $request->balance;
+        $account->currency_id = $request->currency;
+        $account->created_by = $request->user()->id;
+
+        $account->save();
+
+        return redirect(route('accounts.index'));
     }
 
     /**

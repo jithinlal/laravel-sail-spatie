@@ -1,14 +1,13 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head, useForm} from "@inertiajs/react";
 import GhostButton from "@/Components/GhostButton.jsx";
-import {router} from "@inertiajs/core";
-import {Listbox, Transition} from "@headlessui/react";
-import React, {Fragment, useState} from "react";
-import {CheckIcon} from "@heroicons/react/20/solid/index.js";
+import React, { useState} from "react";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {toast} from "react-hot-toast";
 
 export default function Index({auth, accounts, bankTypes, currencies}) {
+    console.log({accounts})
+
     const {data, setData, post, processing, reset} = useForm({
         name: '',
         bankType: 0,
@@ -17,14 +16,12 @@ export default function Index({auth, accounts, bankTypes, currencies}) {
         currency: 25,
     })
 
-    const [selectedBankType, setSelectedBankType] = useState(null)
-    const [selectedCurrency, setSelectedCurrency] = useState(currencies.find(currency => currency.id === 25))
-
     const submit = (e) => {
         e.preventDefault();
+        console.log({data})
         post(route('accounts.store'), {
             onSuccess: () => {
-                toast.success('Project created!')
+                toast.success('Account created!')
                 reset()
             },
             onError: (errors) => {
@@ -63,129 +60,56 @@ export default function Index({auth, accounts, bankTypes, currencies}) {
                 </div>
             </div>
 
-            <dialog id='create-account-modal' className="modal modal-bottom sm:modal-middle p-10">
+            <dialog id='create-account-modal' className="modal modal-middle sm:modal-middle">
                 <div className="modal-box">
-                    <div className="modal-action">
-                        <form method="dialog">
+                    <form method="dialog">
+                        <button className="btn btn-sm btn-circle btn-ghost absolute right-1 top-1">✕</button>
+
+                        <label className="input input-bordered flex items-center gap-2 w-full max-w-md m-2">
+                            Name
                             <input
                                 value={data.name}
-                                placeholder="Name"
-                                className="m-2 input input-bordered w-full max-w-md"
+                                className="grow border-none border-transparent focus:border-transparent focus:ring-0"
                                 onChange={e => setData('name', e.target.value)}
                             />
+                        </label>
+                        <label className="input input-bordered flex items-center gap-2 w-full max-w-md m-2">
+                            Balance
                             <input
-                                value={data.detail}
-                                placeholder="Detail"
-                                className="m-2 input input-bordered w-full max-w-md"
-                                onChange={e => setData('detail', e.target.value)}
+                                value={data.balance}
+                                className="grow border-none border-transparent focus:border-transparent focus:ring-0"
+                                onChange={e => setData('balance', e.target.value)}
                             />
-                            <div className="w-full max-w-md m-2">
-                                <div className="relative mt-1">
-                                    <Listbox value={selectedBankType} onChange={value => {
-                                        setSelectedBankType(value)
-                                        setData('bankType', value)
-                                    }}>
-                                        <Listbox.Button
-                                            className="w-full border-none btn pl-3 pr-10 text-sm bg-primary leading-5 focus:ring-0">
-                                            {selectedBankType === null ? <h6>Type</h6> : selectedBankType.name}
-                                        </Listbox.Button>
-                                        <Transition
-                                            as={Fragment}
-                                            leave="transition ease-in duration-100"
-                                            leaveFrom="opacity-100"
-                                            leaveTo="opacity-0"
-                                        >
-                                            <Listbox.Options
-                                                className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-primary py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                                                {bankTypes.map(bankType => (
-                                                    <Listbox.Option
-                                                        key={bankType.name}
-                                                        className={({active}) =>
-                                                            `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                                                active ? 'bg-secondary' : ''
-                                                            }`
-                                                        }
-                                                        value={bankType.value}
-                                                    >
-                                                        {({selected}) => (
-                                                            <>
-                                                      <span
-                                                          className={`block truncate ${
-                                                              selected ? 'font-medium' : 'font-normal'
-                                                          }`}
-                                                      >
-                                                        {bankType.name}
-                                                      </span>
-                                                                {selected ? (
-                                                                    <span
-                                                                        className="absolute inset-y-0 left-0 flex items-center pl-3">
-                                                                <CheckIcon className="h-5 w-5" aria-hidden="true"/>
-                                                            </span>
-                                                                ) : null}
-                                                            </>
-                                                        )}
-                                                    </Listbox.Option>
-                                                ))}
-                                            </Listbox.Options>
-                                        </Transition>
-                                    </Listbox>
-                                </div>
-                            </div>
-                            <div className="w-full max-w-md m-2">
-                                <div className="relative mt-1">
-                                    <Listbox value={selectedCurrency} onChange={value => {
-                                        setSelectedCurrency(value)
-                                        setData('currency', value)
-                                    }}>
-                                        <Listbox.Button
-                                            className="w-full border-none btn pl-3 pr-10 text-sm bg-primary leading-5 focus:ring-0">
-                                            {selectedCurrency === null ? <h6>Currency</h6> : selectedCurrency.code}
-                                        </Listbox.Button>
-                                        <Transition
-                                            as={Fragment}
-                                            leave="transition ease-in duration-100"
-                                            leaveFrom="opacity-100"
-                                            leaveTo="opacity-0"
-                                        >
-                                            <Listbox.Options
-                                                className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-primary py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                                                {currencies.map(currency => (
-                                                    <Listbox.Option
-                                                        key={currency.id}
-                                                        className={({active}) =>
-                                                            `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                                                active ? 'bg-secondary' : ''
-                                                            }`
-                                                        }
-                                                        value={currency}
-                                                    >
-                                                        {({selected}) => (
-                                                            <>
-                                                      <span
-                                                          className={`block truncate ${
-                                                              selected ? 'font-medium' : 'font-normal'
-                                                          }`}
-                                                      >
-                                                        {currency.code}
-                                                      </span>
-                                                                {selected ? (
-                                                                    <span
-                                                                        className="absolute inset-y-0 left-0 flex items-center pl-3">
-                                                                <CheckIcon className="h-5 w-5" aria-hidden="true"/>
-                                                            </span>
-                                                                ) : null}
-                                                            </>
-                                                        )}
-                                                    </Listbox.Option>
-                                                ))}
-                                            </Listbox.Options>
-                                        </Transition>
-                                    </Listbox>
-                                </div>
-                            </div>
-                            <PrimaryButton className="mt-4 m-2" disabled={processing}>Add</PrimaryButton>
-                        </form>
-                    </div>
+                        </label>
+                        <select className="m-2 select select-bordered w-full max-w-md"
+                                onChange={e => setData('bankType', e.target.value)}>
+                            <option disabled selected>Type</option>
+                            {
+                                bankTypes.map(bankType =>
+                                    <option key={bankType.name} value={bankType.value}>
+                                        {bankType.name}
+                                    </option>
+                                )
+                            }
+                        </select>
+                        <select className="m-2 select select-bordered w-full max-w-md"
+                                onChange={e => setData('currency', e.target.value)}>
+                            <option disabled selected>Currency</option>
+                            {
+                                currencies.map(currency =>
+                                    <option key={currency.id} value={currency.id}
+                                            selected={currency.id === data.currency}>
+                                        {currency.code} - {currency.name}
+                                    </option>
+                                )
+                            }
+                        </select>
+                        <div className="flex justify-around">
+                            <PrimaryButton className="mt-2 w-1/3" disabled={processing} onClick={(e) => submit(e)}>
+                                Add
+                            </PrimaryButton>
+                        </div>
+                    </form>
                 </div>
             </dialog>
         </AuthenticatedLayout>

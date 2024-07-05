@@ -13,7 +13,7 @@ enum BankType: int
         return [
             ['name' => 'Bank', 'value' => self::BANK->value],
             ['name' => 'Credit Card', 'value' => self::CREDIT_CARD->value],
-            ['name' => 'UPI', 'value' => self::BANK->value],
+            ['name' => 'UPI', 'value' => self::UPI->value],
         ];
     }
 }

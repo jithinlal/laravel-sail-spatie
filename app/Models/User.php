@@ -49,7 +49,7 @@ class User extends Authenticatable
 
     public function accounts(): HasMany
     {
-        return $this->hasMany(Account::class);
+        return $this->hasMany(Account::class, 'created_by');
     }
 
     public function categories(): HasMany

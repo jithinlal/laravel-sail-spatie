@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('amount');
-            $table->string('currency');
+            $table->bigInteger('currency_id');
             $table->bigInteger('account_id');
             $table->bigInteger('category_id');
             $table->bigInteger('type_id');
@@ -30,6 +30,10 @@ return new class extends Migration
             $table->foreign('account_id')
                 ->references('id')
                 ->on('accounts')
+                ->onDelete('cascade');
+            $table->foreign('currency_id')
+                ->references('id')
+                ->on('currencies')
                 ->onDelete('cascade');
             $table->text('note')->nullable();
             $table->timestamps();

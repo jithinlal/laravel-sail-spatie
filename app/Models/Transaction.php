@@ -12,7 +12,7 @@ class Transaction extends Model
 
     public $fillable = [
         'amount',
-        'currency',
+        'currency_id',
         'account_id',
         'category_id',
         'type_id',
