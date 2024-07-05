@@ -17,7 +17,10 @@ class AccountController extends Controller
     public function index(): Response
     {
         $user = auth()->user();
-        $accounts = $user->accounts()->get();
+        $accounts = $user
+            ->accounts()
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
         $bankTypes = BankType::values();
         $currencies = Currency::all(['id', 'name', 'code']);
 
