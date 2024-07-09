@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Account;
 use App\Models\Preset;
 use App\Models\User;
+use App\Policies\AccountPolicy;
 use App\Policies\PresetPolicy;
 use App\Policies\ProjectPolicy;
 use App\Policies\RolePolicy;
@@ -31,5 +33,6 @@ class UserServiceProvider extends ServiceProvider
         Gate::policy(Role::class, RolePolicy::class);
         Gate::policy(Preset::class, PresetPolicy::class);
         Gate::policy(Role::class, ProjectPolicy::class);
+        Gate::policy(Account::class, AccountPolicy::class);
     }
 }

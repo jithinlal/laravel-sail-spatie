@@ -6,6 +6,7 @@ use App\Constants\BankType;
 use App\Models\Account;
 use App\Models\Currency;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -92,6 +93,10 @@ class AccountController extends Controller
      */
     public function destroy(Account $account)
     {
-        //
+        Gate::authorize('delete', $account);
+
+        $account->delete();
+
+        return redirect(route('accounts.index'));
     }
 }
